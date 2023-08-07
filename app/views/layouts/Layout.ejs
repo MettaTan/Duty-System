@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/bootstrap/bootstrap.css">
+  <link rel="stylesheet" href="/styles/select2/select2.min.css">
+  <link rel="stylesheet" href="/styles/select2/select2B5Theme.min.css">
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="icon" type="image/x-icon" href="/assets/gsabLogo.png">
+  <title>PLAD Duty System</title>
+</head>
+
+<body>
+  <%- include(views + "/partials/utils/Flash") %>
+  <%- include(views + "/partials/shared/Account") %>
+  <%- include(views + "/partials/shared/Header") %>
+  <span hidden id="ip"><%= ip %></span>
+  <span hidden id="port"><%= port %></span>
+  <%- body %>
+  <script src="/javascripts/moment/moment.min.js"></script>
+  <script src="/javascripts/jquery/jquery.min.js"></script>
+  <script src="/javascripts/ejs/ejs.min.js"></script>
+  <script src="/javascripts/signature/signature_pad.umd.js"></script>
+  <script src="/javascripts/select2/select2.min.js"></script>
+  <script src="/javascripts/bootstrap/bootstrap.bundle.js"></script>
+  <script src="/javascripts/bootstrap/validate.js"></script>
+  <script>
+    const ip = document.getElementById('ip').innerText
+    const port = document.getElementById('port').innerText
+  </script>
+  <%- script %>
+
+</body>
+
+</html>

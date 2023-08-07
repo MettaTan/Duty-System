@@ -1,0 +1,139 @@
+<style>
+  /* * {
+        border-style: solid;
+        border-color: black;
+        border-width: 1px;
+    } */
+  .receipt {
+    /* Sticker padding */
+    width: 50%;
+    padding-top: 0mm;
+    padding-right: 4mm;
+    padding-bottom: 0mm;
+    padding-left: 4mm;
+    /* Use this margin to adjust sticker margins */
+    margin-top: 0mm !important;
+    margin-right: 0mm !important;
+    margin-bottom: 0mm !important;
+    margin-left: 0mm !important;
+    /* visibility: hidden; */
+    overflow: hidden;
+  }
+
+  @media print {
+    @page {
+      size: 80mm 100%;
+      margin-top: 0mm;
+      margin-right: 0mm;
+      margin-bottom: 0mm;
+      margin-left: 0mm;
+    }
+
+    main,
+    main * {
+      display: none !important;
+    }
+
+    .receipt,
+    .receipt * {
+      width: 80mm;
+      visibility: visible !important;
+    }
+
+    .names {
+      font-size: 12px;
+    }
+
+  }
+
+  thead {
+    background-color: lightgray;
+  }
+
+  #summaryTable {
+    width: 100%;
+    text-align: center;
+    border: 3px solid black;
+  }
+
+  #summaryTable th,
+  #summaryTable td {
+    border: 1px solid black;
+  }
+
+  #statusTable {
+    width: 100%;
+    text-align: center;
+    border: 3px solid black;
+  }
+
+  #statusTable th,
+  #statusTable td {
+    border: 1px solid black;
+  }
+
+  #nominalTable {
+    width: 100%;
+    text-align: center;
+    border: 3px solid black;
+  }
+
+  #nominalTable th,
+  #nominalTable td {
+    border: 1px solid black;
+  }
+</style>
+<script src="/javascripts/moment-with-locales.js"></script>
+
+<main class="container d-flex justify-content-center">
+  <div class="mt-5">
+    <div class="d-flex justify-content-center">
+      <img src="/assets/gsabLogo.png" height="100px">
+    </div>
+    <h3 class="mt-3"><span id="ampmStatus"><%= ampmStatus %></span> Receipt</h3>
+    <a class="btn btn-outline-danger btn" type="button" href="/paradeState/<%= type %>">Go Back</a>
+    <button class="btn btn-success btn" type="button" onclick="window.print()">Print</button>
+  </div>
+</main>
+<div class="receipt">
+  <% allPersonnelStatus.forEach(personnelStatus => { %>
+  <div class="d-flex w-25 justify-content-between">
+    <div>
+      <p class="mb-0">
+        <%= personnelStatus.statusTitle %>:
+        <strong id="<%= personnelStatus.statusTitle %><%= ampmStatus %>"></strong>
+        <strong>/ <%= totalStrength %></strong>
+      </p>
+    </div>
+  </div>
+  <ul class="row name-box">
+    <% personnelStatus.allStatuses.forEach(status => { %>
+    <li class="<%= personnelStatus.statusTitle %><%= ampmStatus %> col-4 names p-0">
+      <%= status.personnel.name %>
+    </li>
+    <% }) %>
+  </ul>
+  <% }) %>
+  <p class="fs-5">
+    Generated on <strong id="currentTime"></soan>
+  </p>
+</div>
+<script>
+  document.getElementById("currentTime").textContent = moment().format("MMM Do YYYY, h:mm:ss a")
+  const type = document.getElementById('ampmStatus').innerText
+  const statuses = ['PRESENT', 'OFF', 'MA', 'AO', 'LEAVE', 'RSO', 'RSI', 'UNKNOWN', 'MC', 'ORD']
+
+  const renderSummary = (ampm) => {
+    statuses.forEach(status => {
+      let sum = 0;
+      document.querySelectorAll(`.${status}${ampm}`).forEach((el) => {
+        sum++
+        // if (status == "PRESENT") {
+        //   el.setAttribute("hidden", "")
+        // }
+      })
+      document.getElementById(`${status}${ampm}`).innerText = sum
+    });
+  }
+  renderSummary(type)
+</script>

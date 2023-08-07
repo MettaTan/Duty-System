@@ -1,0 +1,16 @@
+<main class="container w-75">
+  <div class="vstack gap-5">
+    <a href="/">
+      <button class="btn btn-danger menuButton w-100">Back</button>
+    </a>
+    <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#editReportModal">
+      <strong>Edit Report</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal",{id:"editReport", action:"/report/edit"}) %>
+
+    <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#generateReportModal">
+      <strong>Generate Report</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal",{id:"generateReport", action:"/report/generate"}) %>
+  </div>
+</main>

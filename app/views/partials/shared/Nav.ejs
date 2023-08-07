@@ -1,0 +1,37 @@
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <% if (type == "issue") { %>
+    <a class="nav-link active" aria-current="page" href="/report/edit/<%= date %>/issue">Issues</a>
+    <% } else { %>
+    <a class="nav-link" href="/report/edit/<%= date %>/issue">Issues</a>
+    <% } %>
+  </li>
+  <li class="nav-item">
+    <% if (type == "return") { %>
+    <a class="nav-link active" aria-current="page" href="/report/edit/<%= date %>/return">Returns</a>
+    <% } else { %>
+    <a class="nav-link" href="/report/edit/<%= date %>/return">Returns</a>
+    <% } %>
+  </li>
+  <li class="nav-item">
+    <% if (type == "others1") { %>
+    <a class="nav-link active" aria-current="page" href="/report/edit/<%= date %>/others/1">Others 1</a>
+    <% } else { %>
+    <a class="nav-link" href="/report/edit/<%= date %>/others/1">Others 1</a>
+    <% } %>
+  </li>
+  <li class="nav-item">
+    <% if (type == "others2") { %>
+    <a class="nav-link active" aria-current="page" href="/report/edit/<%= date %>/others/2">Others 2</a>
+    <% } else { %>
+    <a class="nav-link" href="/report/edit/<%= date %>/others/2">Others 2</a>
+    <% } %>
+  </li>
+  <li class="nav-item">
+    <% if (type == "final") { %>
+    <a class="nav-link active" aria-current="page" href="/report/edit/<%= date %>/final">Final</a>
+    <% } else { %>
+    <a class="nav-link" href="/report/edit/<%= date %>/final">Final</a>
+    <% } %>
+  </li>
+</ul>

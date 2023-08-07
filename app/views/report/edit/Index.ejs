@@ -1,0 +1,56 @@
+<section class="container">
+  <form action="/report/edit/<%= date %>?_method=PATCH" method="POST" autocomplete="off">
+    <main class="d-flex">
+      <div class="w-100 px-5">
+        <h5>Your Team</h5>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Appointment</th>
+              <th scope="col">Rank & Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% currentTeam.forEach(person => { %>
+            <tr>
+              <td><%= person.appointment %></td>
+              <td><%= person.rank %> <%= person.name %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <div class="w-100 px-5">
+        <h5>Incoming Team</h5>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">RAG IC</span>
+          <input type="text" class="form-control" placeholder="Name" name="[incomingTeam]" value="<%= incomingTeam[0] %>" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">DT</span>
+          <input type="text" class="form-control" placeholder="Name" name="[incomingTeam]" value="<%= incomingTeam[1] %>" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">DT</span>
+          <input type="text" class="form-control" placeholder="Name" name="[incomingTeam]" value="<%= incomingTeam[2] %>" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">DT</span>
+          <input type="text" class="form-control" placeholder="Name" name="[incomingTeam]" value="<%= incomingTeam[3] %>" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">DT</span>
+          <input type="text" class="form-control" placeholder="Name" name="[incomingTeam]" value="<%= incomingTeam[4] %>" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">COS</span>
+          <input type="text" class="form-control" placeholder="Name" name="[incomingTeam]" value="<%= incomingTeam[5] %>" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+      </div>
+    </main>
+    <div class="hstack gap-5 mt-3">
+      <button class="btn btn-danger w-100" type="button" onclick="history.back()">Back</button>
+      <button class="btn btn-primary w-100">Submit</button>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,79 @@
+<main class="container w-75">
+  <a href="/admin">
+    <button class="btn btn-danger w-100">Back</button>
+  </a>
+  <form class="row g-3 needs-validation mt-5 " novalidate method="POST" action="/admin/signup" autocomplete="off">
+    <div class="col-md-3">
+      <label for="inputRank" class="form-label">Rank</label>
+      <select id="inputRank" class="form-select" required name="rank">
+        <option selected hidden value="">Choose...</option>
+        <option value="ME1">ME1</option>
+        <option value="ME2">ME2</option>
+        <option value="ME3">ME3</option>
+        <option value="ME4">ME4</option>
+        <option value="PTE">PTE</option>
+        <option value="LCP">LCP</option>
+        <option value="CPL">CPL</option>
+        <option value="CFC">CFC</option>
+        <option value="3SG">3SG</option>
+        <option value="2SG">2SG</option>
+        <option value="1SG">1SG</option>
+      </select>
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please choose a rank.
+      </div>
+    </div>
+    <div class="col-md-3">
+      <label for="inputName" class="form-label">Name</label>
+      <input type="text" class="form-control" id="inputName" value="" required name="name">
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please enter a name.
+      </div>
+    </div>
+    <div class="col-md-3">
+      <label for="inputUsername" class="form-label">Username</label>
+      <input type="text" class="form-control" id="inputUsername" required name="username">
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please enter a username.
+      </div>
+    </div>
+    <div class="col-md-3">
+      <label for="inputPassword" class="form-label">Password</label>
+      <input type="text" class="form-control" id="inputPassword" required name="password">
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please enter a password.
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="true" id="inputAdmin" name="admin">
+        <label class="form-check-label" for="inputAdmin">
+          Admin
+        </label>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="true" id="inputApprover" name="approver">
+        <label class="form-check-label" for="inputApprover">
+          Approver
+        </label>
+      </div>
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary w-100" type="submit">Submit form</button>
+    </div>
+  </form>
+</main>

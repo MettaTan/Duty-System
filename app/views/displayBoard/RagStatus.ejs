@@ -1,0 +1,125 @@
+<section class="mx-5">
+  <table class="table text-center table-bordered border-dark">
+    <thead>
+      <tr class="align-middle">
+        <th colspan="10">DROP & GO</th>
+      </tr>
+      <tr class="align-middle">
+        <th scope="col">Date</th>
+        <th scope="col">STO</th>
+        <th scope="col">Unit</th>
+        <th scope="col">DT Name</th>
+        <th scope="col">DA Name</th>
+        <th scope="col">RAG IC</th>
+        <th scope="col">Location</th>
+        <th scope="col" colspan="3">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% drops.forEach((drop,i) => { %>
+      <tr>
+        <td class="issueDate"><%= drop.date %></td>
+        <td><%= drop.voucher_id.sto %></td>
+        <td><%= drop.voucher_id.unit %></td>
+        <form action="/displayBoard/ragStatus?_method=PATCH" method="POST">
+          <td>
+            <input type="text" hidden class="form-control" name="id" value="<%= drop._id %>">
+            <input type="text" class="form-control" name="personnels" value="<%= drop.personnels[0] %>">
+          </td>
+          <td>
+            <input type="text" class="form-control" name="personnels" value="<%= drop.personnels[1] %>">
+          </td>
+          <td>
+            <input type="text" class="form-control" name="personnels" value="<%= drop.personnels[2] %>">
+          </td>
+          <td><%= drop.location %></td>
+          <td>
+            <button class="btn btn-info mt-3">Edit</button>
+          </td>
+        </form>
+        <form action="/displayBoard/ragStatus/returned" method="POST">
+          <td>
+            <input type="text" hidden class="form-control" name="id" value="<%= drop._id %>">
+            <span class="d-block">For Weekend</span>
+            <button class="btn btn-success">Returned</button>
+          </td>
+        </form>
+        <form action="/displayBoard/ragStatus/drop" method="POST">
+          <td>
+            <input type="text" hidden class="form-control" name="id" value="<%= drop._id %>">
+            <span class="d-block">For Weekday</span>
+            <button class="btn btn-warning">Cleared</button>
+          </td>
+        </form>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <table class="table text-center table-bordered border-dark mt-5">
+    <thead>
+      <tr class="align-middle">
+        <th colspan="11">UNIT SAFEKEEP</th>
+      </tr>
+      <tr class="align-middle">
+        <th scope="col">Return Date</th>
+        <th scope="col">Safekeep Date</th>
+        <th scope="col">Collection Date</th>
+        <th scope="col">STO</th>
+        <th scope="col">Unit</th>
+        <th scope="col">DT Name</th>
+        <th scope="col">DA Name</th>
+        <th scope="col">RAG IC</th>
+        <th scope="col">Location</th>
+        <th scope="col" colspan="2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% safekeeps.forEach(sk => { %>
+      <tr>
+        <td class="safekeepDate"><%= sk.date %></td>
+        <td class="safekeepDate"><%= sk.status.safekeepStatus.skDate %></td>
+        <td class="safekeepDate"><%= sk.status.safekeepStatus.skCollect %></td>
+        <td><%= sk.voucher_id.sto %></td>
+        <td><%= sk.voucher_id.unit %></td>
+        <form action="/displayBoard/ragStatus?_method=PATCH" method="POST">
+          <td>
+            <input type="text" hidden class="form-control" name="id" value="<%= sk._id %>">
+            <input type="text" class="form-control" name="personnels" value="<%= sk.personnels[0] %>">
+          </td>
+          <td>
+            <input type="text" class="form-control" name="personnels" value="<%= sk.personnels[1] %>">
+          </td>
+          <td>
+            <input type="text" class="form-control" name="personnels" value="<%= sk.personnels[2] %>">
+          </td>
+          <td><%= sk.location %></td>
+          <td>
+            <button class="btn btn-info">Edit</button>
+          </td>
+        </form>
+        <form action="/displayBoard/ragStatus/safekeep" method="POST">
+          <td>
+            <button class="btn btn-warning">Clear</button>
+          </td>
+        </form>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+
+<script>
+  function convertDate(className) {
+    document.querySelectorAll(`.${className}`).forEach((el) => {
+      const date = moment(new Date(el.innerText).toISOString()).format("DD/MM/YYYY")
+      if (date == "01/01/1970") {
+        el.innerText = "Nill"
+      } else {
+        el.innerText = date
+      }
+    })
+  }
+  convertDate("issueDate")
+  convertDate("safekeepDate")
+</script>

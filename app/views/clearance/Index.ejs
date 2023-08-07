@@ -1,0 +1,37 @@
+<main class="container w-75">
+  <div class="vstack gap-5">
+    <a href="/">
+      <button class="btn btn-danger menuButton w-100">Back</button>
+    </a>
+    <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#editClearanceModal">
+      <strong>Edit Clearance</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal",{id:"editClearance", action:"/clearance/edit"}) %>
+
+    <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#generateClearanceModal">
+      <strong>Generate Clearance</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal", {id:"generateClearance", action:"/clearance/generate"}) %>
+
+    <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#approveClearanceModal">
+      <strong>Approve Clearance</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal", {id:"approveClearance", action:"/clearance/approve"}) %>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#PrintModal" >
+          <strong>Print NYR Summary by Issue Date</strong>
+        </button>
+        <%- include(views + "/partials/components/clearance/PrintModal", {id:"printNYR", action:"/clearance/printNYRbyIssue"}) %>
+        <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#Print2Modal"> 
+          <strong>Print NYR Summary by Return Date</strong>
+        </button>
+        <%- include(views + "/partials/components/clearance/Print2Modal", {id:"printNYR2", action:"/clearance/printNYRbyReturn"}) %>
+    </div>
+
+
+
+
+    
+  </div>
+</main>

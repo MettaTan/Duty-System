@@ -1,0 +1,78 @@
+<section class="container">
+  <div class="card mb-5">
+    <div class="card-body bg-secondary bg-opacity-10">
+      <main>
+        <h3>PLAD Detailing Sheet</h3>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link <%= type == "weekday" ? 'active' : '' %>" id=" weekday-tab" data-bs-toggle="tab" data-bs-target="#weekday-tab-pane" type="button" role="tab" aria-controls="weekday-tab-pane" aria-selected="true">WEEKDAY</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link <%= type == "weekend" ? 'active' : '' %>" id="weekend-tab" data-bs-toggle="tab" data-bs-target="#weekend-tab-pane" type="button" role="tab" aria-controls="weekend-tab-pane" aria-selected="false">WEEKEND</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade py-3  <%= type == "weekday" ? 'show active' : '' %>" id="weekday-tab-pane" role="tabpanel" aria-labelledby="weekday-tab" tabindex="0">
+            <form autocomplete="off" action="/clearance/edit/<%= date %>/detailing?_method=PATCH" method="POST">
+              <table class="table text-center align-middle">
+                <thead>
+                  <tr>
+                    <th scope="col">Shift Timings</th>
+                    <th scope="col">Rank & Name</th>
+                    <th scope="col">Signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <input type="text" hidden value="weekday" name="type">
+                  <% let weekdayId = 0 %>
+                  <%- include(views + "/partials/components/clearance/Detailing",{id:weekdayId, type:"weekday", period:"1700 - 2000",p1:detailing[weekdayId].personnel[0], p2:detailing[weekdayId].personnel[1]}) %>
+                  <% weekdayId++ %>
+                  <%- include(views + "/partials/components/clearance/Detailing",{id:weekdayId, type:"weekday", period:"2000 - 2300",p1:detailing[weekdayId].personnel[0], p2:detailing[weekdayId].personnel[1]}) %>
+                  <% weekdayId++ %>
+                  <%- include(views + "/partials/components/clearance/Detailing",{id:weekdayId, type:"weekday", period:"2300 - 0200", p1:detailing[weekdayId].personnel[0], p2:detailing[weekdayId].personnel[1]}) %>
+                  <% weekdayId++ %>
+                  <%- include(views + "/partials/components/clearance/Detailing",{id:weekdayId, type:"weekday", period:"0200 - 0500", p1:detailing[weekdayId].personnel[0], p2:detailing[weekdayId].personnel[1]}) %>
+                </tbody>
+              </table>
+              <button class="btn btn-primary w-100">Weekday Submit</button>
+            </form>
+          </div>
+          <div class="tab-pane fade py-3 <%= type == "weekend" ? 'show active' : '' %>" id="weekend-tab-pane" role="tabpanel" aria-labelledby="weekend-tab" tabindex="1">
+            <form autocomplete="off" action="/clearance/edit/<%= date %>/detailing?_method=PATCH" method="POST">
+              <table class="table text-center align-middle">
+                <thead>
+                  <tr>
+                    <th scope="col">Shift Timings</th>
+                    <th scope="col">Rank & Name</th>
+                    <th scope="col">Signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <input type="text" hidden value="weekend" name="type">
+                  <% let weekendId = 0 %>
+                  <%- include(views + "/partials/components/clearance/Detailing",{id:weekendId, type:"weekend", period:"0900 - 1400",p1:detailing[weekendId].personnel[0], p2:detailing[weekendId].personnel[1]}) %>
+                  <% weekendId++ %>
+                  <%- include(views + "/partials/components/clearance/Detailing",{id:weekendId, type:"weekend", period:"1400 - 1900",p1:detailing[weekendId].personnel[0], p2:detailing[weekendId].personnel[1]}) %>
+                  <% weekendId++ %>
+                  <%- include(views + "/partials/components/clearance/Detailing",{id:weekendId, type:"weekend", period:"1900 - 0000",p1:detailing[weekendId].personnel[0], p2:detailing[weekendId].personnel[1]}) %>
+                  <% weekendId++ %>
+                  <%- include(views + "/partials/components/clearance/Detailing",{id:weekendId, type:"weekend", period:"0000 - 0500",p1:detailing[weekendId].personnel[0], p2:detailing[weekendId].personnel[1]}) %>
+                </tbody>
+              </table>
+              <button class="btn btn-primary w-100">Weekend Submit</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <a href="/clearance/edit/<%= date %>">
+    <button class="btn btn-danger w-100 mb-5" type="button">Back</button>
+  </a>
+</section>
+
+<script src="/javascripts/instantiateSigPads.js"></script>
+<script>
+  instantiateSigPads('personnel')
+</script>

@@ -1,0 +1,120 @@
+<section class="mx-5">
+    <div class="mb-5">
+   
+        <div id="dialog" class="dialog" style="display:none"></div>
+        <div id="overlay" style="display:none"></div>
+        <div id="content" style="display:block">
+            <section id="element-to-print">
+                <div class="card">
+                    <main class="table-responsive card-body bg-secondary bg-opacity-10">
+                      <h3>Generated NYR Summary by Return dates</h3>
+                      <%- include(views + '/partials/components/clearance/NyrTable2') %>
+                    </main>
+                  </div>
+            </section>
+            <input type="button" onclick=window.print() value="Print">
+        </div>
+       
+
+        <!--<input type="button" onclick="openDialog($('#content'))" value="Preview Print" class="previewButton">-->  
+        <!--<input type="button" onclick="exportPdf()" value="Download Report" class="downloadButton">-->
+
+    </div>
+  </section>
+  
+  
+  <script src="/javascripts/instantiateSigPads.js"></script>
+  <script src="/javascripts/returnSummary.js"></script>
+  <script>
+    mergeRow('mmrc')
+    mergeRow('mmrcSupervised')
+    mergeRow('mmrcKeyed')
+    mergeRow('mmrcHandover')
+    mergeRow('r2')
+    mergeRow('r3')
+    mergeRow('nyrR2')
+    mergeRow('nyrR3')
+    mergeRow('dccTakeover')
+  
+    instantiateSigPads('sig')
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    var element = document.getElementById("element-to-print");
+    var opt = {
+        margin: 1,
+        filename: 'myfile.pdf',
+        image: {
+          type: 'jpeg',
+          quality: 0.98
+        },
+        html2canvas: {
+          scale: 2
+        },
+        jsPDF: {
+          unit: 'in',
+          format: 'letter',
+          orientation: 'portrait'
+        }
+      };
+    function exportPdf() {
+        html2pdf().set(opt).from(element).save();
+}
+  </script>
+
+    <style>
+      @media print{
+        *:not(#element-to-print):not(#element-to-print *){
+         
+        }
+
+        #element-to-print{
+        position: absolute;
+        top: 0;
+        left: 0;
+        }
+    }
+    
+    </style>
+
+    <script type="text/javascript">
+    $(document).ready(function() { init() })
+    
+    function init() {
+        $('#overlay').click(function() { closeDialog(); })
+    }
+    
+    function openDialog(element) {
+        //this is the general dialog handler.
+        //pass the element name and this will copy
+        //the contents of the element to the dialog box
+    
+        $('#overlay').css('height', $(document.body).height() + 'px')
+        $('#overlay').show()
+        $('#dialog').html($(element).html())
+        centerMe('#dialog')
+        $('#dialog').show();
+    }
+    
+    function closeDialog() {
+        $('#overlay').hide();
+        $('#dialog').hide().html('');
+    }
+    
+    function centerMe(element) {
+        //pass element name to be centered on screen
+        var pWidth = $(window).width();
+        var pTop = $(window).scrollTop()
+        var eWidth = $(element).width()
+        var height = $(element).height()
+        $(element).css('top', '130px')
+        //$(element).css('top',pTop+100+'px')
+        $(element).css('left', parseInt((pWidth / 2) - (eWidth / 2)) + 'px')
+    }
+    
+    
+    </script>
+
+    
+
+    

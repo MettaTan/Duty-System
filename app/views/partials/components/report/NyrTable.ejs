@@ -1,0 +1,91 @@
+ <!-- NYR Table -->
+ <table class="table text-center table-bordered align-middle border-dark mt-5 table-striped" border>
+   <thead>
+     <tr>
+       <th scope="col" colspan="3">NYR Voucher Details</th>
+       <th scope="col" colspan="3">Status</th>
+     </tr>
+   </thead>
+   <tbody>
+     <tr>
+       <th>Location</th>
+       <th>Unit</th>
+       <th>Sto No</th>
+       <th>NYR</th>
+       <th>Issued Date</th>
+       <th>Scheduled Return Date</th>
+     </tr>
+
+     <!-- NYR R2 -->
+     <% nyr.forEach((return_,i) => { %>
+     <% if (return_.location == "R2") { %>
+     <tr class="voucherRow">
+       <td class="nyrR2"><%= return_.location %></td>
+       <td><%= return_.voucher_id.unit %></td>
+       <td><%= return_.voucher_id.sto %></td>
+       <td>
+         <% if (return_.status.ragStatus.status === "NYR" || return_.status.ragStatus.status === "") { %>
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+           <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+         </svg>
+         <% } %>
+       </td>
+       <td class="nyrDate">
+         <%= moment(return_.voucher_id.issue_id.date).format('YYYY-MM-DD') %>
+       </td>
+       <td class="nyrDate">
+         <%= moment(return_.date).format('YYYY-MM-DD') %>
+       </td>
+     </tr>
+     <% } %>
+     <% }) %>
+
+     <!-- NYR R3 -->
+     <% nyr.forEach((return_,i) => { %>
+     <% if (return_.location == "R3") { %>
+     <tr class="voucherRow">
+       <td class="nyrR3"><%= return_.location %></td>
+       <td><%= return_.voucher_id.unit %></td>
+       <td><%= return_.voucher_id.sto %></td>
+       <td>
+         <% if (return_.status.ragStatus.status === "NYR" || return_.status.ragStatus.status === "") { %>
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+           <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+         </svg>
+         <% } %>
+       </td>
+       <td class="nyrDate">
+        <%= moment(return_.voucher_id.issue_id.date).format('YYYY-MM-DD') %>
+      </td>
+      <td class="nyrDate">
+        <%= moment(return_.date).format('YYYY-MM-DD') %>
+      </td>
+     </tr>
+     <% } %>
+     <% }) %>
+
+     <!-- NYR ESH -->
+     <% nyr.forEach((return_,i) => { %>
+     <% if (return_.location == "ESH") { %>
+     <tr class="voucherRow">
+       <td class="nyrESH"><%= return_.location %></td>
+       <td><%= return_.voucher_id.unit %></td>
+       <td><%= return_.voucher_id.sto %></td>
+       <td>
+         <% if (return_.status.ragStatus.status === "NYR" || return_.status.ragStatus.status === "") { %>
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+           <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+         </svg>
+         <% } %>
+       </td>
+       <td class="nyrDate">
+         <%= moment(return_.voucher_id.issue_id.date).format('YYYY-MM-DD') %>
+       </td>
+       <td class="nyrDate">
+         <%= moment(return_.date).format('YYYY-MM-DD') %>
+       </td>
+     </tr>
+     <% } %>
+     <% }) %>
+   </tbody>
+ </table>

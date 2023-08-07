@@ -1,0 +1,47 @@
+<section class="vstack">
+  <!-- R2 -->
+  <div class="card my-3">
+    <div class="card-body">
+      <h5 class="d-inline-flex card-title">R2</h5>
+      <% if (weekendDates.length != 0) { %>
+      <ul class="nav nav-pills gap-3 d-inline-flex" id="weekend R2">
+        <% weekendDates.forEach((weekendDate,i) => { %>
+        <%- include(views + "/partials/components/clearance/Weekend",{loc:"R2", weekendDate, time:"(After 9)", period:"after9" }) %>
+        <%- include(views + "/partials/components/clearance/Weekend",{loc:"R2", weekendDate: weekendDates[i+1], time:"(After 5)", period:"after5" }) %>
+        <% }) %>
+      </ul>
+      <% } else { %>
+      <%- include(views + "/partials/components/clearance/Weekday",{loc:"R2"}) %>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- R3 -->
+  <div class="card my-3">
+    <div class="card-body">
+      <h5 class="d-inline-flex card-title">R3</h5>
+      <% if (weekendDates.length != 0) { %>
+      <ul class="nav nav-pills gap-3 d-inline-flex" id="weekend R3">
+        <% weekendDates.forEach((weekendDate,i) => { %>
+        <%- include(views + "/partials/components/clearance/Weekend",{loc:"R3", weekendDate, time:"(After 9)", period:"after9" }) %>
+        <%- include(views + "/partials/components/clearance/Weekend",{loc:"R3", weekendDate: weekendDates[i+1], time:"(After 5)", period:"after5" }) %>
+        <% }) %>
+      </ul>
+      <% } else { %>
+      <%- include(views + "/partials/components/clearance/Weekday",{loc:"R3"}) %>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<script>
+  function removeLastFromWeekend(loc) {
+    const weekend = document.getElementById(`weekend ${loc}`)
+    if (weekend) {
+      const items = document.getElementsByClassName(`nav-item ${loc}`)
+      items[items.length - 1].setAttribute('hidden', true)
+    }
+  }
+  removeLastFromWeekend('R2')
+  removeLastFromWeekend('R3')
+</script>

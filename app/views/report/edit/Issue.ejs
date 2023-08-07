@@ -1,0 +1,274 @@
+<section class="container">
+  <div class="card">
+    <form class="card-body bg-secondary bg-opacity-10" autocomplete="off" action="/report/edit/<%= date %>/issue?_method=PATCH" method="POST">
+      <main>
+        <div class="my-3">
+          <%- include(views + "/partials/shared/nav") %>
+        </div>
+        <h3 class="text-primary">Issue Summary:</h3>
+        <ol>
+          <div>
+            <h5>
+              <li>
+                Scheduled Issue <span id="date"><%= date %></span> (after 9a.m)
+              </li>
+            </h5>
+            <table class="table align-middle table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Issued</th>
+                  <th scope="col">Keyed</th>
+                  <th scope="col">Booking</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% after9.forEach((issue,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= issue.voucher_id.unit %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= issue.voucher_id.sto %>" disabled>
+                  </td>
+                  <td>
+                    <select class="form-select" aria-label="Default select example" disabled>
+                      <option value=" <%= issue.location %>" selected hidden><%= issue.location %></option>
+                      <option value="R2">R2</option>
+                      <option value="R3">R3</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input hidden type="text" value="<%= issue._id %>" name="[after9][<%= i %>][id]">
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:issue.status.issued, data:"after9", status:"issued"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:issue.status.keyed, data:"after9", status:"keyed"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:issue.status.booking, data:"after9", status:"booking"}) %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <h5 class="mt-5">
+              <li>Scheduled Issue <span id="nextDay"><%= date %></span> (after 5a.m)</li>
+            </h5>
+            <table class="table align-middle table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Issued</th>
+                  <th scope="col">Keyed</th>
+                  <th scope="col">Booking</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% after5.forEach((issue,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= issue.voucher_id.unit %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= issue.voucher_id.sto %>" disabled>
+                  </td>
+                  <td>
+                    <select class="form-select" aria-label="Default select example" disabled>
+                      <option value=" <%= issue.location %>" selected hidden><%= issue.location %></option>
+                      <option value="R2">R2</option>
+                      <option value="R3">R3</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input hidden type="text" value="<%= issue._id %>" name="[after5][<%= i %>][id]">
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:issue.status.issued, data:"after5", status:"issued"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:issue.status.keyed, data:"after5", status:"keyed"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:issue.status.booking, data:"after5", status:"booking"}) %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <h5 class="mt-5">
+              <li>Tasking Order</li>
+            </h5>
+            <table class="table align-middle table-striped">
+              <caption>
+                <button class="btn btn-outline-success w-100" type="button" onclick="addVoucher('tasking')">Add Entry</button>
+              </caption>
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Issued</th>
+                  <th scope="col">Keyed</th>
+                  <th scope="col">Booking</th>
+                  <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider" id="taskingBody">
+                <% taskings.forEach((task,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= task.voucher_id.unit %>" name="[tasking][<%= i %>][unit]">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= task.voucher_id.sto %>" name="[tasking][<%= i %>][sto]">
+                  </td>
+                  <td>
+                    <select class="form-select" aria-label="Default select example" name="[tasking][<%= i %>][location]">
+                      <option value="<%= task.location %>" selected hidden><%= task.location %></option>
+                      <option value="R2">R2</option>
+                      <option value="R3">R3</option>
+                      <option value="ESH">ESH</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input hidden type="text" value="<%= task._id %>" name="[tasking][<%= i %>][id]">
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:task.status.issued, data:"tasking", status:"issued"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:task.status.keyed, data:"tasking", status:"keyed"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:task.status.booking, data:"tasking", status:"booking"}) %>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger" onclick="deleteVoucher(this,'tasking','<%= i %>')">X</button>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <h5 class="mt-5">
+              <li>ESH Issue</li>
+            </h5>
+            <table class="table align-middle table-striped">
+              <caption>
+                <button class="btn btn-outline-success w-100" type="button" onclick="addVoucher('esh')">Add Entry</button>
+              </caption>
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Issued</th>
+                  <th scope="col">Keyed</th>
+                  <th scope="col">Booking</th>
+                  <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider" id="eshBody">
+                <% eshs.forEach((esh,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= esh.voucher_id.unit %>" name="[esh][<%= i %>][unit]">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= esh.voucher_id.sto %>" name="[esh][<%= i %>][sto]">
+                  </td>
+                  <td>
+                    <select class="form-select" aria-label="Default select example" name="[esh][<%= i %>][location]">
+                      <option value="<%= esh.location %>" selected hidden><%= esh.location %></option>
+                      <option value="R2">R2</option>
+                      <option value="R3">R3</option>
+                      <option value="ESH">ESH</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input hidden type="text" value="<%= esh._id %>" name="[esh][<%= i %>][id]">
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:esh.status.issued, data:"esh", status:"issued"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:esh.status.keyed, data:"esh", status:"keyed"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/IssueCheckbox', {i, state:esh.status.booking, data:"esh", status:"booking"}) %>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger" onclick="deleteVoucher(this,'esh','<%= i %>')">X</button>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+        </ol>
+      </main>
+      <div class="hstack gap-5 mt-5">
+        <button class="btn btn-danger w-100" type="button" onclick="history.back()">Back</button>
+        <button class="btn btn-primary w-100">Submit</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  const date = document.getElementById('date')
+  date.innerText = moment(date.innerText).format('DD/MM/YYYY')
+  const nextDay = document.getElementById('nextDay')
+  nextDay.innerText = moment(nextDay.innerText).add(1, 'days').format('DD/MM/YYYY')
+</script>
+
+<script>
+  function addVoucher(type) {
+    const body = document.getElementById(`${type}Body`)
+    const i = body.childElementCount
+    const html = `
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" name="[${type}][${i}][unit]">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" name="[${type}][${i}][sto]">
+                  </td>
+                  <td>
+                    <select class="form-select" name="[${type}][${i}][location]">
+                      <option value="R2">R2</option>
+                      <option value="R3">R3</option>
+                      <option value="ESH">ESH</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input class="form-check-input checkbox ms-3" type="checkbox" value="true" name="[${type}][${i}][status][issued]">
+                  </td>
+                  <td>
+                    <input class="form-check-input checkbox ms-3" type="checkbox" value="true" name="[${type}][${i}][status][keyed]">
+                  </td>
+                  <td>
+                    <input class="form-check-input checkbox ms-3" type="checkbox" value="true" name="[${type}][${i}][status][booking]">
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" type="button" onclick="deleteVoucher(this,'${type}',${i})">X</button>
+                  </td>
+                </tr>
+    `
+    body.insertAdjacentHTML("beforeend", html)
+  }
+
+  function deleteVoucher(el, type, i) {
+    const row = el.parentElement.parentElement
+    row.setAttribute('hidden', true)
+    el.insertAdjacentHTML("beforeend", `<input hidden type="text" value="true" name="[${type}][${i}][delete]">`)
+  }
+</script>

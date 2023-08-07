@@ -1,0 +1,257 @@
+<section class="container">
+  <div class="card mb-5">
+    <form class="card-body bg-secondary bg-opacity-10" autocomplete="off" action="/report/edit/<%= date %>/return?_method=PATCH" method="POST">
+      <div class="my-3">
+        <%- include(views + "/partials/shared/nav") %>
+      </div>
+      <main>
+        <h3 class="text-primary">Return Summary:</h3>
+        <ol class="vstack gap-5">
+          <div>
+            <h5>
+              <li>Total Returned Vouchers: </li>
+            </h5>
+            <!-- MMRC -->
+            <table class="table align-middle table-striped">
+              <caption>
+                <button class="btn btn-outline-success w-100" type="button" onclick="addReturn('mmrc')">Add Entry</button>
+              </caption>
+              <thead class="table-dark">
+                <tr class="text-center">
+                  <th scope="col" colspan="7" class="fs-5">Mmrc</th>
+                </tr>
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">High Rate</th>
+                  <th scope="col">Shortfall</th>
+                  <th scope="col">Recovery</th>
+                  <th scope="col">Booking</th>
+                  <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider" id="mmrcBody">
+                <% mmrcReturns.forEach((mmrcReturn,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= mmrcReturn.voucher_id.unit %>" name="[mmrc][<%= i %>][unit]">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= mmrcReturn.voucher_id.sto %>" name="[mmrc][<%= i %>][sto]">
+                  </td>
+                  <td>
+                    <input hidden type="text" name="[mmrc][<%= i %>][id]" value="<%= mmrcReturn._id %>">
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:mmrcReturn.status.highRate, type:"mmrc", status:"highRate"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:mmrcReturn.status.shortfall, type:"mmrc", status:"shortfall"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:mmrcReturn.status.discovery, type:"mmrc", status:"discovery"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:mmrcReturn.status.booking, type:"mmrc", status:"booking"}) %>
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" type="button" onclick="deleteVoucher(this,'mmrc','<%= i %>')">X</button>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+
+            <!-- Unit -->
+            <table class="table align-middle table-striped">
+              <thead class="table-dark">
+                <tr class="text-center">
+                  <th scope="col" colspan="8" class="fs-5">Unit</th>
+                </tr>
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">High Rate</th>
+                  <th scope="col">Shortfall</th>
+                  <th scope="col">Discovery</th>
+                  <th scope="col">Booking</th>
+                  <th scope="col">Discrep</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% unitReturns.forEach((unitReturn,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= unitReturn.voucher_id.unit %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= unitReturn.voucher_id.sto %>" disabled>
+                  </td>
+                  <td>
+                    <select class="form-select" aria-label="Default select example" disabled>
+                      <option value="<%= unitReturn.location %>" selected hidden><%= unitReturn.location %></option>
+                      <option value="R2">R2</option>
+                      <option value="R3">R3</option>
+                      <option value="ESH">ESH</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input hidden type="text" name="[unit][<%= i %>][id]" value="<%= unitReturn._id %>">
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.highRate, type:"unit", status:"highRate"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.shortfall, type:"unit", status:"shortfall"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.discovery, type:"unit", status:"discovery"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.booking, type:"unit", status:"booking"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.discrepStatus.discrepancy, type:"unit", status:"discrepancy"}) %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <h5>
+              <li>Drop & Go: </li>
+            </h5>
+            <table class="table align-middle table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">High Rate</th>
+                  <th scope="col">Shortfall</th>
+                  <th scope="col">Discovery</th>
+                  <th scope="col">Booking</th>
+                  <th scope="col">Discrep</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% dropAndGo.forEach((unitReturn,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= unitReturn.voucher_id.unit %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= unitReturn.voucher_id.sto %>" disabled>
+                  </td>
+                  <td>
+                    <select class="form-select" aria-label="Default select example" disabled>
+                      <option value="<%= unitReturn.location %>" selected hidden><%= unitReturn.location %></option>
+                      <option value="R2">R2</option>
+                      <option value="R3">R3</option>
+                      <option value="ESH">ESH</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input hidden type="text" name="[dropAndGo][][<%= i %>][id]" value="<%= unitReturn._id %>">
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.highRate, type:"dropAndGo", status:"highRate"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.shortfall, type:"dropAndGo", status:"shortfall"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.discovery, type:"dropAndGo", status:"discovery"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.booking, type:"dropAndGo", status:"booking"}) %>
+                  </td>
+                  <td>
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.discrepStatus.discrepancy, type:"dropAndGo", status:"discrepancy"}) %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <h5>
+              <li>Fully Expended</li>
+            </h5>
+            <table class="table align-middle table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Booking</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% fullExpand.forEach((unitReturn,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= unitReturn.voucher_id.unit %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= unitReturn.voucher_id.sto %>" disabled>
+                  </td>
+                  <td>
+                    <input hidden type="text" name="[fullExpand][][<%= i %>][id]" value="<%= unitReturn._id %>">
+                    <%- include(views + '/partials/components/report/mmrcCheckbox', {i, state:unitReturn.status.booking, type:"fullExpand", status:"booking"}) %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+        </ol>
+      </main>
+      <div class="hstack gap-5 mt-5">
+        <a href="/report/edit/<%= date %>/issue" class="w-100">
+          <button class="btn btn-danger w-100" type="button">Back</button>
+        </a>
+        <button class="btn btn-primary w-100">Submit</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  function addReturn(type) {
+    const body = document.getElementById(`${type}Body`)
+    const i = body.childElementCount
+
+    const html = `
+                <tr>
+                  <td>
+                    <input type="text" class="form-control" placeholder="UNIT" name="[${type}][${i}][unit]">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" name="[${type}][${i}][sto]">
+                  </td>
+                  <td>
+                    <input class="form-check-input checkbox ms-3" type="checkbox" value="true" name="[${type}][${i}][status][highRate]">
+                  </td>
+                  <td>
+                    <input class="form-check-input checkbox ms-3" type="checkbox" value="true" name="[${type}][${i}][status][shortfall]">
+                  </td>
+                  <td>
+                    <input class="form-check-input checkbox ms-3" type="checkbox" value="true" name="[${type}][${i}][status][discovery]">
+                  </td>
+                  <td>
+                    <input class="form-check-input checkbox ms-3" type="checkbox" value="true" name="[${type}][${i}][status][booking]">
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" type="button" onclick="deleteVoucher(this,'${type}',${i})">X</button>
+                  </td>
+                </tr>
+    `
+    body.insertAdjacentHTML("beforeend", html)
+
+  }
+
+  function deleteVoucher(el, type, i) {
+    const row = el.parentElement.parentElement
+    row.setAttribute('hidden', true)
+    el.insertAdjacentHTML("beforeend", `<input hidden type="text" value="true" name="[${type}][${i}][delete]">`)
+  }
+</script>

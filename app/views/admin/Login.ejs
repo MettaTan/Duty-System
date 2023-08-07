@@ -1,0 +1,30 @@
+<main class="container w-75">
+  <a href="/admin">
+    <button class="btn btn-danger w-100">Back</button>
+  </a>
+  <form class="row g-3 needs-validation mt-5 " novalidate method="POST" action="/admin/login" autocomplete="off">
+    <div class="col-md-3">
+      <label for="inputUsername" class="form-label">Username</label>
+      <input type="text" class="form-control" id="inputUsername" required name="username">
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please enter a username.
+      </div>
+    </div>
+    <div class="col-md-3">
+      <label for="inputPassword" class="form-label">Password</label>
+      <input type="text" class="form-control" id="inputPassword" required name="password">
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please enter a password.
+      </div>
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit">Submit form</button>
+    </div>
+  </form>
+</main>

@@ -1,0 +1,234 @@
+<section class="container">
+  <form class="card bg-secondary bg-opacity-10" action="/collection" method="POST" autocomplete="off">
+    <main class="card-body">
+      <div class="row g-3 mb-4">
+        <div class="col-md-2">
+          <label for="inputDate" class="form-label">Collection Date</label>
+          <input type="date" class="form-control" id="inputDate" name="date">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Add Collection</label>
+          <button class="btn btn-primary form-control" type="button" onclick="addCollection();renderHTML();">Add Collection</button>
+        </div>
+      </div>
+
+      <ol class="ps-3 vstack gap-3" id="allCollection">
+        <!-- Render All Collections -->
+      </ol>
+      <div class="col-12 mt-5 vstack gap-3">
+        <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#previewModal" onclick="showPreview()">Preview</button>
+        <button type="submit" class="btn btn-success w-100">Submit</button>
+      </div>
+    </main>
+  </form>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="previewModalLabel">Preview</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-preview">
+        <h5>Issue for <span id="preview-date">date</span></h5>
+        <br>
+        <div class="vstack">
+          <ol id="modal-preview-body">
+          </ol>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" onclick="copy('#modal-preview')">Copy</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  class Collection {
+    time = '05:00';
+    location = '';
+    unit = '';
+    sto = '';
+    matDoc = '2000';
+    allItems = []
+  }
+
+  class Item {
+    matDesc = "";
+    lot = "";
+    qty = "";
+  }
+
+  const allCollection = []
+</script>
+
+<script>
+  function addCollection() {
+    allCollection.push(new Collection())
+  }
+
+  function editCollection(CIndex, evt, data) {
+    evt.value = evt.value.toUpperCase()
+    allCollection[CIndex][data] = evt.value
+  }
+
+  function deleteCollection(CIndex) {
+    allCollection.splice(CIndex, 1)
+  }
+
+  function addItem(CIndex) {
+    allCollection[CIndex].allItems.push(new Item())
+  }
+
+  function editItem(CIndex, IIndex, evt, data) {
+    evt.value = evt.value.toUpperCase()
+    allCollection[CIndex].allItems[IIndex][data] = evt.value
+  }
+
+  function deleteItem(CIndex, IIndex) {
+    allCollection[CIndex].allItems.splice(IIndex, 1)
+  }
+</script>
+
+<script>
+  function renderItem(CIndex, IIndex, item) {
+    const html = `
+                 <li>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="inputMatDesc" class="form-label">Mat. Desc.</label>
+                      <select class="form-select basic-usage" data-placeholder="Choose one thing" onchange="editItem(${CIndex},${IIndex}, this,'matDesc')" name="[collections][${CIndex}][items][${IIndex}][matDesc]"> 
+                        <option value="${item.matDesc}" selected hidden>${item.matDesc}</option>
+                        <% items.forEach((item) => { %>
+                        <option value="<%= item %>"><%= item %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inputLot" class="form-label">Lot No.</label>
+                      <input type="text" required class="form-control text-uppercase" placeholder="AMA17B-002" id="inputLot" value="${item.lot}" oninput="editItem(${CIndex},${IIndex}, this,'lot')" name="[collections][${CIndex}][items][${IIndex}][lot]">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inputQty" class="form-label">Qty</label>
+                      <input type="number" class="form-control" placeholder="500" id="inputQty" value="${item.qty}" oninput="editItem(${CIndex},${IIndex}, this,'qty')" name="[collections][${CIndex}][items][${IIndex}][qty]">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Delete Item</label>
+                      <button class="btn btn-outline-danger form-control" type="button" onclick="deleteItem(${CIndex},${IIndex});renderHTML()">X</button>
+                    </div>
+                  </div>
+                </li>
+    `
+    $('#collection' + CIndex).append(html)
+    $('.basic-usage').select2({
+      theme: "bootstrap-5",
+      width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+      placeholder: $(this).data('placeholder'),
+    });
+  }
+
+  function renderCollection(CIndex, collection) {
+    const html = `
+        <li>
+            <div class="vstack gap-2">
+              <div class="row g-3">
+                <div class="col-md-2">
+                  <label for="inputTime${CIndex}" class="form-label">Time</label>
+                  <input type="time" class="form-control" id="inputTime${CIndex}" value="${collection.time}" onchange="editCollection(${CIndex},this,'time')" name="[collections][${CIndex}][time]">
+                </div>
+                <div class="col-md-1">
+                  <label for="inputLocation${CIndex}" class="form-label">Location</label>
+                  <select class="form-select" id="inputLocation${CIndex}" onchange="editCollection(${CIndex},this,'location')" name="[collections][${CIndex}][location]">
+                    <option selected hidden value="${collection.location}">${collection.location}</option>
+                    <option value="R2">R2</option>
+                    <option value="R3">R3</option>
+                    <option value="ESH">ESH</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label for="inputUnit${CIndex}" class="form-label">Unit</label>
+                  <input type="text" class="form-control text-uppercase" placeholder="ADF" id="inputUnit${CIndex}" value="${collection.unit}" oninput="editCollection(${CIndex},this,'unit')" name="[collections][${CIndex}][unit]">
+                </div>
+                <div class="col-md-2">
+                  <label for="inputSto${CIndex}" class="form-label">STO No.</label>
+                  <input type="text" class="form-control text-uppercase" placeholder="S23-100123" id="inputSto${CIndex}" value="${collection.sto}" oninput="editCollection(${CIndex},this,'sto')" name="[collections][${CIndex}][sto]">
+                </div>
+                <div class="col-md-2">
+                  <label for="inputMatDoc${CIndex}" class="form-label">Mat. Doc.</label>
+                  <input type="text" class="form-control text-uppercase" placeholder="2000364371" id="inputMatDoc${CIndex}" value="${collection.matDoc}" oninput="editCollection(${CIndex},this,'matDoc')" name="[collections][${CIndex}][matDoc]">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">Delete Collection</label>
+                  <button class="btn btn-danger form-control" type="button" onclick="deleteCollection(${CIndex});renderHTML()">X</button>
+                </div>
+                <div class="col-md-1">
+                  <label class="form-label">Add Item</label>
+                  <button class="btn btn-outline-success form-control" type="button" onclick="addItem(${CIndex});renderHTML();">+</button>
+                </div>
+              </div>
+
+              <ol style="list-style-type: lower-alpha;" id="collection${CIndex}" class="vstack gap-3">
+
+              </ol>
+            </div>
+        </li>
+    `
+    $('#allCollection').append(html);
+  }
+
+  function renderHTML() {
+    $('#allCollection').html("");
+    allCollection.forEach((collection, CIndex) => {
+      renderCollection(CIndex, collection)
+
+      collection.allItems.forEach((item, IIndex) => {
+        renderItem(CIndex, IIndex, item)
+      })
+    });
+  }
+</script>
+
+<script src="/javascripts/copy.js"></script>
+
+<script>
+  function previewItem(CIndex, IIndex, item) {
+    const html = `
+    <li>${item.qty} ${item.matDesc}</li>
+    `
+    $('#preview' + CIndex).append(html)
+  }
+
+  function previewCollection(CIndex, collection) {
+    const html = `
+            <li>
+              <span>${collection.time}</span>
+              <span>${collection.unit}</span>
+              <span>${collection.sto}</span>
+              <ol style="list-style-type: lower-alpha;" id="preview${CIndex}">
+              </ol>
+            </li>
+            <br>
+    `
+    $('#modal-preview-body').append(html);
+  }
+
+  function showPreview() {
+    $('#modal-preview-body').html("");
+    const inputDate = document.getElementById('inputDate').value
+    const previewDate = document.getElementById('preview-date')
+    if (inputDate) {
+      previewDate.innerText = moment(inputDate).format('DD/MM/YYYY')
+    }
+
+    allCollection.forEach((collection, CIndex) => {
+      previewCollection(CIndex, collection)
+      collection.allItems.forEach((item, IIndex) => {
+        previewItem(CIndex, IIndex, item)
+      })
+    });
+  }
+</script>

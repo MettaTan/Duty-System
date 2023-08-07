@@ -1,0 +1,29 @@
+<ul class="nav nav-pills gap-3 d-inline-flex">
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="<%= route %>/<%= date %>/issueSummary/<%= date %>/<%= loc %>/after9">
+      <button type="button" class="btn btn-outline-primary <%= type == "after9" && location == loc ? 'active' : '' %>">
+        <span class="date">
+          <%= date %>
+        </span> (After 9)
+      </button>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="<%= route %>/<%= date %>/issueSummary/<%= nextDay %>/<%= loc %>/after5">
+      <button type="button" class="btn btn-outline-primary <%= type == "after5" && location == loc  ? 'active' : '' %>">
+        <span class="date">
+          <%= nextDay %>
+        </span> (After 5)
+      </button>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="<%= route %>/<%= date %>/issueSummary/<%= nextDay %>/<%= loc %>/nextdayAfter9">
+      <button type="button" class="btn btn-outline-primary <%= type == "nextdayAfter9" && location == loc  ? 'active' : '' %>">
+        <span class="date">
+          <%= nextDay %>
+        </span> (Next Day After 9)
+      </button>
+    </a>
+  </li>
+</ul>

@@ -1,0 +1,10 @@
+<div class="input-group" id="recovery<%= i %>">
+  <label class="input-group-text">DIS/PLAD/M/</label>
+  <input type="text" hidden value="<%= discover._id %>" name="[recovery][<%= i %>][_id]">
+  <input type="text" hidden value="DIS" name="[recovery][<%= i %>][title]">
+  <input type="text" hidden value="PLAD" name="[recovery][<%= i %>][location]">
+  <input type="text" hidden value="M" name="[recovery][<%= i %>][tag]">
+  <input type="text" class="form-control" placeholder="/083/2023" value="<%= discover.discover_id %>" name="[recovery][<%= i %>][discover_id]">
+  <textarea class="form-control" aria-label="With textarea" placeholder="(1 x 7.62MM TRACER)&#013;(1 x 5.56MM BALL)&#013;(1 x 5.56MM TRACER)" style="height: 100px;" value="(1 x 7.62MM TRACER)" name="[recovery][<%= i %>][items]"><%= discover.items %></textarea>
+  <button type="button" class="btn btn-outline-danger" onclick="deleteRecovery('<%= i %>')">X</button>
+</div>

@@ -1,0 +1,22 @@
+<main class="container w-75">
+  <div class="vstack gap-5">
+    <a href="/">
+      <button class="btn btn-danger menuButton w-100">Back</button>
+    </a>
+    <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#issueScheduleModal">
+      <strong>Issue Schedule</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal",{id:"issueSchedule", action:"/displayBoard/schedule/Issue"}) %>
+
+    <button type="button" class="btn btn-secondary menuButton" data-bs-toggle="modal" data-bs-target="#returnScheduleModal">
+      <strong>Return Schedule</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal", {id:"returnSchedule", action:"/displayBoard/schedule/Return"}) %>
+
+    <a href="/displayBoard/ragStatus">
+      <button type="button" class="btn btn-secondary menuButton w-100">
+        <strong>RAG Status</strong>
+      </button>
+    </a>
+  </div>
+</main>

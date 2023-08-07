@@ -1,0 +1,228 @@
+<section class="mx-5">
+  <div class="mb-5">
+    <form class="" autocomplete="off" action="/clearance/approve/<%= date %>/returnSummary?_method=PATCH" method="POST">
+      <div class="card">
+        <main class="table-responsive card-body bg-secondary bg-opacity-10">
+          <h3>Generated Return Summary </h3>
+
+          <table class="table text-center table-bordered align-middle border-dark" border>
+            <thead>
+              <tr>
+                <th scope="col" colspan="4">Voucher Details</th>
+                <th scope="col" colspan="5">Status</th>
+                <th scope="col" colspan="4">Hand Over</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" id="date"><%= date %></th>
+                <th>Location</th>
+                <th>Unit</th>
+                <th>Sto No</th>
+                <th>Full Expend</th>
+                <th>Returned</th>
+                <th>Drop & Go</th>
+                <th>Booking</th>
+                <th>Safekeep</th>
+                <th>Supervised By</th>
+                <th>Return Keyed By</th>
+                <th>R2/R3 OR Weekend DT Handover To</th>
+                <th>DCC Takeover By</th>
+              </tr>
+
+              <!-- MMRC -->
+              <% mmrcReturns.forEach((return_, i) => { %>
+              <tr class="voucherRow">
+                <td class="mmrc">MMRC</td>
+                <td><%= return_.voucher_id.unit %></td>
+                <td><%= return_.voucher_id.sto %></td>
+                <td class="bg-secondary bg-opacity-25"></td>
+                <td class="bg-secondary bg-opacity-25"></td>
+                <td class="bg-secondary bg-opacity-25"></td>
+                <td>
+                  <% if (return_.status.booking) { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td class="bg-secondary bg-opacity-25"></td>
+                <td class="mmrcSupervised">
+                  <%= return_.handover.supervised_by %>
+                </td>
+                <td class="mmrcKeyed">
+                  <%= return_.handover.return_keyed_by %>
+                </td>
+                <td class="mmrcHandover">
+                  <%= return_.handover.handover_to%>
+                </td>
+                <td class="dccTakeover"> <%= cleared_by.rankName %> </td>
+              </tr>
+              <% }) %>
+
+              <!-- R2 -->
+              <% r2.forEach((return_, i) => { %>
+              <tr class="voucherRow">
+                <td class="r2">R2</td>
+                <td><%= return_.voucher_id.unit %></td>
+                <td><%= return_.voucher_id.sto %></td>
+                <td>
+                  <% if (return_.status.ragStatus.status === "FULLY EXPENDED") { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (return_.status.ragStatus.status === "RETURNS") { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (return_.status.ragStatus.status === "DROP & GO") { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (return_.status.booking) { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (return_.status.safekeepStatus.sk) { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                  <%= return_.handover.supervised_by %>
+                </td>
+                <td>
+                  <%= return_.handover.return_keyed_by %>
+                </td>
+                <td>
+                  <%= return_.handover.handover_to %>
+                </td>
+                <td class="dccTakeover"> <%= cleared_by.rankName %> </td>
+              </tr>
+              <% }) %>
+
+              <!-- R3 -->
+              <% r3.forEach((return_,i) => { %>
+              <tr class="voucherRow">
+                <td class="r3">R3</td>
+                <td><%= return_.voucher_id.unit %></td>
+                <td><%= return_.voucher_id.sto %></td>
+                <td>
+                  <% if (return_.status.ragStatus.status === "FULLY EXPENDED") { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (return_.status.ragStatus.status === "RETURNS") { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (return_.status.ragStatus.status === "DROP & GO") { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (return_.status.booking) { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                  <% } %>
+                </td>
+                <td>
+                </td>
+                <td>
+                  <%= return_.handover.supervised_by %>
+                </td>
+                <td>
+                  <%= return_.handover.return_keyed_by %>
+                </td>
+                <td>
+                  <%= return_.handover.handover_to %>
+                </td>
+                <td class="dccTakeover"> <%= cleared_by.rankName %> </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+
+          <%- include(views + '/partials/components/report/NyrTable') %>
+        </main>
+      </div>
+
+      <section class="d-flex w-100 my-5">
+        <div>
+          <h5>Handing over Duty Team:</h5>
+          <div class="sig">
+            <div class="mb-3">
+              <label for="inputRankName1" class="form-label">Rank & Name:</label>
+              <input type="text" class="form-control" id="inputRankName1" value="<%= handover_by.rankName %>" name="handover_by[rankName]">
+            </div>
+            <canvas class="border sigPad"></canvas>
+            <input type="text" hidden class="sigInput" value="<%= handover_by.sig %>" name="handover_by[sig]">
+            <div>
+              <button type="button" class="btn btn-danger sigPadClear">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-auto">
+          <h5>DCC Cleared By:</h5>
+          <div class="sig">
+            <div class="mb-3">
+              <label for="inputRankName2" class="form-label">Rank & Name:</label>
+              <input type="text" class="form-control" id="inputRankName2" value="<%= cleared_by.rankName %>" name="cleared_by[rankName]">
+            </div>
+            <canvas class="border sigPad"></canvas>
+            <input type="text" hidden class="sigInput" value="<%= cleared_by.sig %>" name="cleared_by[sig]">
+            <div>
+              <button type="button" class="btn btn-danger sigPadClear">Clear</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="hstack gap-5 mt-3">
+        <button class="btn btn-danger w-100" type="button" onclick="history.back()">Back</button>
+        <button class="btn btn-primary w-100">Submit</button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+
+<script src="/javascripts/instantiateSigPads.js"></script>
+<script src="/javascripts/returnSummary.js"></script>
+<script>
+  mergeRow('mmrc')
+  mergeRow('mmrcSupervised')
+  mergeRow('mmrcKeyed')
+  mergeRow('mmrcHandover')
+  mergeRow('r2')
+  mergeRow('r3')
+  mergeRow('nyrR2')
+  mergeRow('nyrR3')
+  mergeRow('dccTakeover')
+
+  instantiateSigPads('sig')
+</script>

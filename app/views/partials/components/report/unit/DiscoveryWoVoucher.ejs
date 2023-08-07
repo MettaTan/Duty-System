@@ -1,0 +1,29 @@
+<div class="input-group" id="discovery<%= i %>">
+  <input type="text" hidden value="<%= discover._id %>" name="[discovery][<%= i %>][_id]">
+  <select class="form-select" name="[discovery][<%= i %>][title]">
+    <option value="<%= discover.title %>" selected hidden><%= discover.title %></option>
+    <option value="DIS">DIS</option>
+    <option value="COMP">COMP</option>
+    <option value="MIS">MIS</option>
+    <option value="RAI">RAI</option>
+  </select>
+
+  <select class="form-select" name="[discovery][<%= i %>][location]">
+    <option value="<%= discover.location %>" selected hidden><%= discover.location %></option>
+    <option value="PLAD">PLAD</option>
+    <option value="HENDON">HENDON</option>
+    <option value="NEESOON">NEESOON</option>
+    <option value="TEKONG">TEKONG</option>
+  </select>
+
+  <select class="form-select" name="[discovery][<%= i %>][tag]">
+    <option value="<%= discover.tag %>" selected hidden><%= discover.tag %></option>
+    <option value="M">M</option>
+    <option value="R">R</option>
+  </select>
+
+  <input type="text" class="form-control" placeholder="083/2023" name="[discovery][<%= i %>][discover_id]" value="<%= discover.discover_id %>">
+
+  <textarea class="form-control w-25" placeholder="(1 x 7.62MM TRACER)&#013;(1 x 5.56MM BALL)&#013;(1 x 5.56MM TRACER)" style="height: 100px" name="[discovery][<%= i %>][items]"><%= discover.items %></textarea>
+  <button type="button" class="btn btn-outline-danger" onclick="deleteDiscovery('<%= i %>')">X</button>
+</div>

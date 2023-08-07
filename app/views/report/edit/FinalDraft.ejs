@@ -1,0 +1,422 @@
+<style>
+  pre {
+    white-space: pre-line;
+  }
+</style>
+
+<section class="container">
+  <div class="card">
+    <div class="card-body bg-secondary bg-opacity-10" autocomplete="off">
+      <main>
+        <ol style="list-style-type:none">
+          <!-- Issues -->
+          <div class="my-3">
+            <h4>
+              <li>1) Issues: <span id="issueTotal">0</span></li>
+            </h4>
+            <ol style="list-style-type:none">
+              <!-- After 9 -->
+              <li class="fw-semibold">i) Scheduled Issue <%= date %> (after 9): <span id="after9Total">0</span>
+                <div hidden>
+                  <% issues.after9.forEach((el,i) => { %>
+                  <p class="after9 issue <%= el.issued %> <%= el.keyed %> mb-0"><%= el.unit %> <%= el.sto %></p>
+                  <% }) %>
+                </div>
+              </li>
+
+              <!-- After 5 -->
+              <li class="fw-semibold">ii) Scheduled Issue <span id="nextDay"><%= date %></span> (after 5): <span id="after5Total">0</span>
+                <div hidden>
+                  <% issues.after5.forEach((el,i) => { %>
+                  <p class="after5 issue <%= el.issued %> <%= el.keyed %> mb-0"><%= el.unit %> <%= el.sto %></p>
+                  <% }) %>
+                </div>
+              </li>
+
+              <!-- Tasking Order -->
+              <li class="fw-semibold">iii) Tasking Order: <span id="taskingOrderTotal">0</span>
+                <div class="px-4">
+                  <% issues.taskingOrder.forEach((el,i) => { %>
+                  <span class="taskingOrder issue mb-0 fw-normal d-block"><%= el.unit %> <%= el.sto %></span>
+                  <% }) %>
+                </div>
+              </li>
+
+              <!-- ESH -->
+              <li class="fw-semibold">iv) ESH: <span id="eshTotal"></span>
+                <div class="px-4">
+                  <% issues.esh.forEach((el,i) => { %>
+                  <span class="esh issue mb-0 fw-normal d-block"><%= el.unit %> <%= el.sto %></span>
+                  <% }) %>
+                </div>
+              </li>
+
+              <!-- R2 R3 Issue Summary -->
+              <li class="fw-semibold">v) R2/R3 Issued: <span id="issuedTotal">0</span>
+                <div class="vstack" hidden>
+                  <% issues.after9.forEach((el,i) => { %>
+                  <% if (el.issued) { %>
+                  <span class="issued issued<%= el.location %>"> <%= el.location %> </span>
+                  <% } %>
+                  <% }) %>
+
+                  <% issues.after5.forEach((el,i) => { %>
+                  <% if (el.issued) { %>
+                  <span class="issued issued<%= el.location %>"> <%= el.location %> </span>
+                  <% } %>
+                  <% }) %>
+                </div>
+
+                <div class="vstack px-4">
+                  <span class="mb-0 fw-normal">
+                    R2: <span id="issuedR2">0</span>
+                  </span>
+                  <span class="mb-0 fw-normal">
+                    R3: <span id="issuedR3">0</span>
+                  </span>
+                </div>
+              </li>
+
+              <!-- Not Yet Issued -->
+              <li class="fw-semibold">vi) Not Yet Issued: <span id="nyiTotal">0</span>
+                <div class="vstack px-4">
+                  <% issues.after9.forEach((el,i) => { %>
+                  <% if (!el.issued) { %>
+                  <span class="nyi fw-normal d-block"> <%= el.unit %> <%= el.sto %> </span>
+                  <% } %>
+                  <% }) %>
+
+                  <% issues.after5.forEach((el,i) => { %>
+                  <% if (!el.issued) { %>
+                  <span class="nyi fw-normal d-block"> <%= el.unit %> <%= el.sto %> </span>
+                  <% } %>
+                  <% }) %>
+                </div>
+              </li>
+
+              <!-- Keyed Issued Vouchers -->
+              <li class="fw-semibold">vii) Keyed Issued Vouchers: <span id="keyedTotal">0</span>
+                <div class="vstack" hidden>
+                  <% issues.after9.forEach((el,i) => { %>
+                  <% if (el.keyed) { %>
+                  <span class="keyed d-block"> <%= el.unit %> <%= el.sto %> </span>
+                  <% } %>
+                  <% }) %>
+
+                  <% issues.after5.forEach((el,i) => { %>
+                  <% if (el.keyed) { %>
+                  <span class="keyed d-block"> <%= el.unit %> <%= el.sto %> </span>
+                  <% } %>
+                  <% }) %>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <br>
+
+          <!-- Unit Came Late -->
+          <div class="my-3">
+            <h4>
+              <li>2) Unit Came Late: <span id="lateTotal">0</span></li>
+            </h4>
+            <ol style="list-style-type:lower-roman">
+              <% late.forEach((el,i) => { %>
+              <li class="late mb-0"><%= el.unit %> <%= el.sto %></li>
+              <% }) %>
+            </ol>
+          </div>
+
+          <br>
+
+          <!-- Returns -->
+          <div class="my-3">
+            <h4>
+              <li>3) Return: <span id="returnTotal">0</span></li>
+            </h4>
+            <ol style="list-style-type:none" class="fw-semibold">
+              <!-- Total Returned Vouchers -->
+              <li>i) Total Returned Vouchers: <span id="returnedTotal">0</span>
+                <div hidden>
+                  <% returns.returned.unit.forEach((el,i) => { %>
+                  <p class="returned return mb-0"><%= el.unit %> <%= el.sto %></p>
+                  <% }) %>
+                </div>
+              </li>
+
+              <!-- Drop & Go -->
+              <li>ii) Drop & Go: <span id="dropAndGoTotal">0</span>
+                <div hidden>
+                  <% returns.dropAndGo.forEach((el,i) => { %>
+                  <p class="dropAndGo return dropAndGo<%= el.location %> mb-0"><%= el.unit %> <%= el.sto %></p>
+                  <% }) %>
+                </div>
+
+                <div class="vstack px-4 fw-normal">
+                  <span class="mb-0">
+                    R2: <span id="dropAndGoR2">0</span>
+                  </span>
+                  <span class="mb-0">
+                    R3: <span id="dropAndGoR3">0</span>
+                  </span>
+                </div>
+              </li>
+
+              <!-- Fully Expanded Vouchers -->
+              <li>iii) Fully Expanded Vouchers: <span id="fullExpandTotal">0</span>
+                <div hidden>
+                  <% returns.fullExpand.forEach((el,i) => { %>
+                  <p class="fullExpand return fw-semibold mb-0"><%= el.unit %> <%= el.sto %></p>
+                  <% }) %>
+                </div>
+              </li>
+
+            </ol>
+          </div>
+
+          <br>
+
+          <!-- Discrepancy -->
+          <div class="my-3">
+            <h4>
+              <li>4) Discrepancy: <span id="discrepancyTotal">0</span></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:none">
+                <% discrepancy.forEach((el,i) => { %>
+                <li class="discrepancy mb-0 fw-semibold"><%= el.unit %> (<%= el.sto %>)</li>
+                <ol style="list-style-type:none">
+                  <% el.items.forEach((item,i) => { %>
+                  <li class="fw-semibold"><%= item.item %></li>
+                  DECLARED QTY: <%= item.declaredQty %> <br>
+                  RETURN QTY: <%= item.returnQty %>
+                  <% }) %>
+                </ol>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- High Rate -->
+          <div class="my-3">
+            <h4>
+              <li>5) HighRate: <span id="highRateTotal">0</span></li>
+            </h4>
+            <ol style="list-style-type:none" class="fw-semibold">
+              <!-- Unit -->
+              <li>i) Unit: <span id="highRateUnitTotal">0</span>
+                <div class="px-4">
+                  <% returns.returned.unit.forEach((el,i) => { %>
+                  <% if (el.highRate) { %>
+                  <span class="highRate highRateUnit mb-0 fw-normal d-block"><%= el.unit %> (<%= el.sto %>)</span>
+                  <% } %>
+                  <% }) %>
+
+                  <% returns.dropAndGo.forEach((el,i) => { %>
+                  <% if (el.highRate) { %>
+                  <span class="highRate highRateUnit mb-0 fw-normal d-block"><%= el.unit %> (<%= el.sto %>)</span>
+                  <% } %>
+                  <% }) %>
+                </div>
+              </li>
+
+              <!-- MMRC -->
+              <li>ii) MMRC: <span id="highRateMmrcTotal">0</span>
+                <div class="px-4">
+                  <% returns.returned.mmrc.forEach((el,i) => { %>
+                  <% if (el.highRate) { %>
+                  <span class="highRate highRateMmrc mb-0 fw-normal d-block"><%= el.unit %> (<%= el.sto %>)</span>
+                  <% } %>
+                  <% }) %>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <br>
+
+          <!-- Unit Discovery -->
+          <div class="my-3">
+            <h4>
+              <li>6) Unit Discovery: <span id="discoveryTotal">0</span></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:lower-roman">
+                <% discovery.forEach((el,i) => { %>
+                <li class="discovery mb-0">
+                  <%= el.type %>/<%= el.location %>/<%= el.tag %>/<%= el.id %>
+                  <pre><%= el.ammo %></pre>
+                </li>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- MMMRC Recovery -->
+          <div class="my-3">
+            <h4>
+              <li>7) MMRC Recovery: <span id="recoveryTotal">0</span></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:lower-roman">
+                <% recovery.forEach((el,i) => { %>
+                <li class="recovery mb-0">
+                  <%= el.title %><%= el.id %>
+                  <pre><%= el.ammo %></pre>
+                </li>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Booking -->
+          <div class="my-3">
+            <h4>
+              <li>8) Booking: <span id="bookingTotal">0</span></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:lower-roman">
+                <% booking.forEach((el,i) => { %>
+                <li class="booking mb-0">
+                  <%= el.unit %> (<%= el.sto %>)
+                  <pre>
+                    <%= el.reason %>
+                  </pre>
+                </li>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Unit Feedback -->
+          <div class="my-3">
+            <h4>
+              <li>9) Unit Feedback:</li>
+            </h4>
+            <div>
+              <pre>
+                <%= feedback %>
+              </pre>
+            </div>
+          </div>
+
+          <!-- Any Other Matters -->
+          <div class="my-3">
+            <h4>
+              <li>10) Any Other Matters:</li>
+            </h4>
+            <div>
+              <pre>
+                <%= others %>
+              </pre>
+            </div>
+          </div>
+
+          <!-- Outstanding Task -->
+          <div class="my-3">
+            <h4>
+              <li>11) Outstanding Tasks:</li>
+            </h4>
+            <div>
+              <pre>
+                <%= outstandingTask %>
+              </pre>
+            </div>
+          </div>
+
+          <!-- Safekeep -->
+
+        </ol>
+      </main>
+      <div class="hstack gap-5 mt-5">
+        <a href="/" class="w-100">
+          <button class="btn btn-success w-100" type="button">Home</button>
+        </a>
+        <a href="/edit/<%= date %>/others/2" class="w-100">
+          <button class="btn btn-danger w-100" type="button">Back</button>
+        </a>
+        <button class="btn btn-primary w-100" type="button" onclick="copy()">Copy</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  function copy() {
+    const cb = navigator.clipboard;
+    const main = document.querySelector('main');
+    cb.writeText(main.innerText)
+  }
+</script>
+
+<script>
+  function sumBays(type, location) {
+    let total = 0
+    document.querySelectorAll(`.${type}${location}`).forEach(() => {
+      total++
+      document.getElementById(`${type}${location}`).innerHTML = total
+    })
+  }
+  sumBays('issued', 'R2')
+  sumBays('issued', 'R3')
+
+  sumBays('dropAndGo', 'R2')
+  sumBays('dropAndGo', 'R3')
+</script>
+
+<script>
+  function sumDocuments(className) {
+    let total = 0;
+    document.querySelectorAll(`.${className}`).forEach((el, i) => {
+      total += 1
+      document.getElementById(`${className}Total`).innerHTML = total
+    })
+  }
+
+  //Issues
+  sumDocuments('issue')
+  sumDocuments('after9')
+  sumDocuments('after5')
+  sumDocuments('taskingOrder')
+  sumDocuments('esh')
+  sumDocuments('issued')
+  sumDocuments('nyi')
+  sumDocuments('keyed')
+
+  sumDocuments('late')
+
+  //Returns
+  sumDocuments('return')
+  sumDocuments('returned')
+  sumDocuments('dropAndGo')
+  sumDocuments('fullExpand')
+
+  sumDocuments('discrepancy')
+
+  // High Rate
+  sumDocuments('highRate')
+  sumDocuments('highRateMmrc')
+  sumDocuments('highRateUnit')
+
+  sumDocuments('discovery')
+  sumDocuments('recovery')
+  sumDocuments('booking')
+</script>
+
+<script>
+  function addDay() {
+    const date = document.getElementById('nextDay')
+    const formattedDate = new Date(date.innerText)
+    formattedDate.setDate(formattedDate.getDate() + 1)
+    const newDate = formattedDate.toISOString().split('T')[0]
+    date.innerText = newDate
+  }
+  addDay()
+</script>

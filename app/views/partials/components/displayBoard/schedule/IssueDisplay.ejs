@@ -1,0 +1,36 @@
+<table class="table text-center table-bordered border-dark">
+  <thead>
+    <tr class="align-middle">
+      <th colspan="3"><%= location %></th>
+      <th scope="col" colspan="4">Return By</th>
+
+    </tr>
+    <tr>
+      <th scope="col">Time</th>
+      <th scope="col">Unit</th>
+      <th scope="col">STO</th>
+      <th scope="col">Date</th>
+      <th scope="col">Time</th>
+      <th scope="col">Remarks</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% documents.forEach((document, DIndex) => { %>
+    <% if (document.location == location) { %>
+    <tr>
+      <td><%= document.time %></td>
+      <td><%= document.voucher_id.unit %></td>
+      <td><%= document.voucher_id.sto %></td>
+      <td class="returnDate"><%= document.voucher_id.return_id.date %></td>
+      <td><%= document.voucher_id.return_id.time %></td>
+      <td><%= document.voucher_id.return_id.remarks %></td>
+      <td>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#<%= location %><%= DIndex %>Modal">Edit</button>
+      </td>
+      <%- include(views + "/partials/components/displayBoard/schedule/Edit",{location, voucher_id:document.voucher_id, issue_id:document, return_id:document.voucher_id.return_id, DIndex}) %>
+    </tr>
+    <% } %>
+    <% }) %>
+  </tbody>
+</table>

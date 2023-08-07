@@ -1,0 +1,228 @@
+<% currentTeam.forEach((team,i) => { %>
+<ol hidden>
+  <li class="team">
+    <span><%= team.appointment %></span>
+    <span><%= team.rank %></span>
+    <span><%= team.name %></span>
+    <span><%= team.remarks %></span>
+    <span><%= team.sig %></span>
+  </li>
+</ol>
+<% }) %>
+
+<section class="container">
+  <div class="my-5">
+    <main class="d-flex">
+      <div class="w-100 px-5">
+        <h3>Personnel Summary</h3>
+        <div class="row g-3 mb-5">
+          <div class="col-md-3">
+            <label for="inputAppointment" class="form-label">Appointment</label>
+            <select id="inputAppointment" class="form-select">
+              <option selected hidden>Choose...</option>
+              <option value="RAG IC">RAG IC</option>
+              <option value="COS">COS</option>
+              <option value="DT">DT</option>
+              <option value="OJT">OJT</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="inputRank" class="form-label">Rank</label>
+            <select id="inputRank" class="form-select">
+              <option selected hidden>Choose...</option>
+              <option value="ME1">ME1</option>
+              <option value="ME2">ME2</option>
+              <option value="PTE">PTE</option>
+              <option value="LCP">LCP</option>
+              <option value="CPL">CPL</option>
+              <option value="CFC">CFC</option>
+              <option value="3SG">3SG</option>
+              <option value="2SG">2SG</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="inputName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="inputName">
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-primary mt-4" onclick="addPersonnel()">Add</button>
+          </div>
+        </div>
+
+        <form action="/clearance/edit/<%= date %>?_method=PATCH" method="POST" autocomplete="off" autocapitalize="characters" id="form">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col">Appointment</th>
+                <th scope="col">Rank</th>
+                <th scope="col">Name</th>
+                <th scope="col">Remarks</th>
+                <th scope="col">Signature</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Render HTML here -->
+            </tbody>
+          </table>
+          <div class="hstack gap-5 mt-3">
+            <a href="/clearance" class="w-100">
+              <button class="btn btn-danger w-100" type="button">Back</button>
+            </a>
+            <button class="btn btn-primary w-100" type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</section>
+
+<script>
+  //This sig pad instantiation is diff from the one in the public folder
+  function instantiateSigPads(el) {
+    document.querySelectorAll(`.${el}`).forEach((el, i) => {
+      const sigPad = el.querySelector(".sigPad");
+      const sigInput = el.querySelector(".sigInput");
+
+      const sigPadInstance = new SignaturePad(sigPad, {
+        backgroundColor: "rgb(255, 255, 255)",
+      });
+      sigPadInstance.fromDataURL(allPersonnels[i].sig);
+
+      sigPadInstance.addEventListener("endStroke", () => {
+        const sig = sigPadInstance.toDataURL();
+        // The line below is what makes it different
+        allPersonnels[i].sig = sig;
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        sigInput.value = sig;
+      });
+
+      el.querySelector(".sigPadClear").addEventListener("click", () => {
+        sigPadInstance.clear();
+        const sig = sigPadInstance.toDataURL();
+        allPersonnels[i].sig = sig;
+        sigInput.value = sig;
+      });
+    });
+  }
+</script>
+
+<script>
+  function renderRow(personnel, i) {
+    const {
+      appointment,
+      rank,
+      name,
+      remarks,
+      sig
+    } = personnel
+
+    const html = `
+      <tr class="personnel">
+        <td>
+          <select class="form-select" name="[${i}][appointment]" onchange="editInput(${i},this,'appointment')">
+            <option selected hidden value="${appointment}">${appointment}</option>
+            <option value="RAG IC">RAG IC</option>
+            <option value="COS">COS</option>
+            <option value="DT">DT</option>
+            <option value="OJT">OJT</option>
+          </select>
+        </td>
+        <td>
+          <select class="form-select" onchange="editInput(${i},this,'rank')" name="[${i}][rank]">
+            <option selected hidden value="${rank}">${rank}</option>
+            <option value="ME1">ME1</option>
+            <option value="ME2">ME2</option>
+            <option value="PTE">PTE</option>
+            <option value="LCP">LCP</option>
+            <option value="CPL">CPL</option>
+            <option value="CFC">CFC</option>
+            <option value="3SG">3SG</option>
+            <option value="2SG">2SG</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" class="form-control" value="${name}" name="[${i}][name]" oninput="editInput(${i},this,'name')">
+        </td>
+        <td>
+          <input type="text" class="form-control" value="${remarks}" name="[${i}][remarks]"  oninput="editInput(${i},this,'remarks')">
+        </td>
+        <td>
+          <div class="sig">
+            <canvas class="border sigPad"></canvas>
+            <input type="text" hidden class="sigInput" value="${sig}" name="[${i}][sig]">
+            <div>
+              <button type="button" class="btn btn-danger sigPadClear">Clear</button>
+            </div>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" onclick="deletePersonnel(${i})">X</button>
+        </td>
+      </tr>
+    `
+    $("tbody").append(html)
+  }
+
+
+  function renderPersonnels(params) {
+    $("tbody").html("")
+    allPersonnels.forEach((personnel, i) => {
+      renderRow(personnel, i)
+    });
+  }
+</script>
+
+<script>
+  class Personnel {
+    appointment = ""
+    rank = ""
+    name = ""
+    remarks = " "
+    sig = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAAAXNSR0IArs4c6QAABGhJREFUeF7t1IEJADAMAsF2/6EtdIuHywRyBu+2HUeAAIGAwDVYgZZEJEDgCxgsj0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIg8ACBlFZdWYR+vQAAAABJRU5ErkJggg=="
+    constructor(appointment, rank, name, remarks, sig) {
+      this.appointment = appointment
+      this.rank = rank
+      this.name = name
+      this.remarks = remarks
+      this.sig = sig
+    }
+  }
+  const allPersonnels = []
+
+  function addPersonnel() {
+    const appointment = document.querySelector('#inputAppointment').value
+    const rank = document.querySelector('#inputRank').value
+    const name = document.querySelector('#inputName').value
+    allPersonnels.push(new Personnel(appointment, rank, name, "NIL", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAAAXNSR0IArs4c6QAABGhJREFUeF7t1IEJADAMAsF2/6EtdIuHywRyBu+2HUeAAIGAwDVYgZZEJEDgCxgsj0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIgYLD8AAECGQGDlalKUAIEDJYfIEAgI2CwMlUJSoCAwfIDBAhkBAxWpipBCRAwWH6AAIGMgMHKVCUoAQIGyw8QIJARMFiZqgQlQMBg+QECBDICBitTlaAECBgsP0CAQEbAYGWqEpQAAYPlBwgQyAgYrExVghIg8ACBlFZdWYR+vQAAAABJRU5ErkJggg=="))
+    renderPersonnels()
+    instantiateSigPads('personnel')
+  }
+
+  function deletePersonnel(i) {
+    allPersonnels.splice(i, 1)
+    renderPersonnels()
+    instantiateSigPads('personnel')
+  }
+
+  function editInput(i, e, data) {
+    allPersonnels[i][data] = e.value
+  }
+</script>
+
+
+
+<script>
+  // Initialise Team
+  document.querySelectorAll('.team').forEach((el) => {
+    const datas = el.children
+    const appointment = datas[0].innerText
+    const rank = datas[1].innerText
+    const name = datas[2].innerText
+    const remarks = datas[3].innerText
+    const sig = datas[4].innerText
+    allPersonnels.push(new Personnel(appointment, rank, name, remarks, sig))
+    renderPersonnels()
+    instantiateSigPads('personnel')
+  })
+</script>

@@ -1,0 +1,15 @@
+<ul class="list-group">
+  <li class="list-group-item bg-secondary bg-opacity-10">STO: <%= recover.voucher_id.sto %></li>
+  <li class="list-group-item p-0">
+    <div class="input-group">
+      <label class="input-group-text" style="border-radius: 0px 0px 0px 5px;">DIS/PLAD/M/</label>
+      <input type="text" hidden value="<%= recover._id %>" name="[recovery][<%= i %>][return_id]">
+      <input type="text" hidden value="<%= recover.voucher_id._id %>" name="[recovery][<%= i %>][voucher_id]">
+      <input type="text" hidden value="DIS" name="[recovery][<%= i %>][title]">
+      <input type="text" hidden value="PLAD" name="[recovery][<%= i %>][location]">
+      <input type="text" hidden value="M" name="[recovery][<%= i %>][tag]">
+      <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder="/083/2023" name="[recovery][<%= i %>][discover_id]">
+      <textarea class="form-control" aria-label="With textarea" placeholder="(1 x 7.62MM TRACER)&#013;(1 x 5.56MM BALL)&#013;(1 x 5.56MM TRACER)" style="height: 100px; border-radius: 0px 0px 5px 0px;" value="(1 x 7.62MM TRACER)" name="[recovery][<%= i %>][items]"></textarea>
+    </div>
+  </li>
+</ul>

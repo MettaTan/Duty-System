@@ -1,0 +1,44 @@
+<style>
+  ul.navbar-nav.me-auto {
+    display: inline-block;
+  }
+
+  .cursor {
+    cursor: pointer;
+  }
+</style>
+<header>
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <div class="container-fluid">
+      <div class="navbar-brand">
+        <img src="/assets/gsabLogo.png" height="30px">
+        &nbsp;GSAB | Pasir Laba Ammunition Depot
+      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-content"><span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar-content">
+        <ul class="navbar-nav hstack gap-3">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/clearance">Clearance</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/report">Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/displayBoard">Display Board</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/collection">Collection</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="text-center my-4" id="headerLogo">
+    <img class="mb-2" src="/assets/gsabLogo.png" height="100px">
+    <h2><%= header %></h2>
+  </div>
+</header>

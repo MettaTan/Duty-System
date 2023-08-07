@@ -1,0 +1,110 @@
+
+> plad_ehr@1.0.0 server
+> node index
+
+Time: Mon Jan 09 2023 18:22:12 GMT+0800 (Singapore Standard Time)
+PLAD_Parade_State listening on port http://127.0.0.1:8004
+Database connected to 127.0.0.1:27017
+----------------------------------
+
+> plad_ehr@1.0.0 server
+> node index
+
+Time: Mon Jan 09 2023 18:23:40 GMT+0800 (Singapore Standard Time)
+PLAD_Parade_State listening on port http://127.0.0.1:8004
+Database connected to 127.0.0.1:27017
+----------------------------------
+
+> plad_ehr@1.0.0 server
+> node index
+
+Time: Mon Jan 16 2023 08:20:35 GMT+0800 (Singapore Standard Time)
+PLAD_Parade_State listening on port http://127.0.0.1:8004
+Database connected to 127.0.0.1:27017
+----------------------------------
+
+> plad_ehr@1.0.0 server
+> node index
+
+Time: Mon Jan 16 2023 08:29:13 GMT+0800 (Singapore Standard Time)
+PLAD_Parade_State listening on port http://127.0.0.1:8004
+Database connected to 127.0.0.1:27017
+----------------------------------
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Wed Jun 28 2023 10:24:47 GMT+0800 (Singapore Standard Time)
+Express is listening on http://127.0.0.1:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Wed Jun 28 2023 10:26:54 GMT+0800 (Singapore Standard Time)
+Express is listening on http://192.168.1.145:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Wed Jun 28 2023 10:31:13 GMT+0800 (Singapore Standard Time)
+Express is listening on http://192.168.1.145:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Fri Jun 30 2023 01:15:21 GMT+0800 (Singapore Standard Time)
+Express is listening on http://192.168.1.145:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Fri Jun 30 2023 09:29:20 GMT+0800 (Singapore Standard Time)
+Express is listening on http://192.168.1.145:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Fri Jun 30 2023 10:56:37 GMT+0800 (Singapore Standard Time)
+Express is listening on http://192.168.1.145:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Fri Jun 30 2023 11:31:05 GMT+0800 (Singapore Standard Time)
+Express is listening on http://127.0.0.1:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Mon Jul 03 2023 16:28:45 GMT+0800 (Singapore Standard Time)
+Express is listening on http://127.0.0.1:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Mon Jul 03 2023 21:28:45 GMT+0800 (Singapore Standard Time)
+Express is listening on http://127.0.0.1:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary
+
+> plad_report@1.0.0 server
+> cd app && node server
+
+Time: Tue Jul 04 2023 10:06:37 GMT+0800 (Singapore Standard Time)
+Express is listening on http://127.0.0.1:8005
+MongoDB is listening on http://127.0.0.1:27017/plad_duty_summary

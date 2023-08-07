@@ -1,0 +1,26 @@
+<% if (!user_id) { %>
+<div class="bg-warning">
+  <section class="container">
+    <div class="d-flex gap-5">
+      <p class="my-1">User ID: -</p>
+      <p class="my-1">Username: -</p>
+      <p class="my-1">Admin: -</p>
+      <p class="my-1">Approver: -</p>
+    </div>
+  </section>
+</div>
+<% } else { %>
+<div class="bg-success bg-opacity-50">
+  <section class="container">
+    <div class="d-flex gap-5">
+      <p class="my-1">User ID: <%= user_id %></p>
+      <p class="my-1">Username: <%= username %></p>
+      <p class="my-1">Admin: <%= admin  %></p>
+      <p class="my-1">Approver: <%= approver %></p>
+      <form action="/admin/logout" class="ms-auto" method="POST">
+        <button class="btn btn-danger py-0 my-1">Logout</button>
+      </form>
+    </div>
+  </section>
+</div>
+<% } %>

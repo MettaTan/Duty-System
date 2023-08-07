@@ -1,0 +1,141 @@
+<div class="modal fade" id="<%= location %><%= DIndex %>Modal" tabindex="-1" aria-labelledby="<%= location %><%= DIndex %>ModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="<%= location %><%= DIndex %>ModalLabel">Edit</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/displayBoard/schedule/<%= type %>/<%= date %>?_method=PATCH" method="POST" autocomplete="false">
+        <input type="text" hidden class="form-control" value="<%= voucher_id._id %>" name="v_id">
+        <div class="modal-body vstack gap-3">
+          <div class="row g-3">
+            <div class="col-4">
+              <label for="<%= location %><%= DIndex %>inputIssueUnit" class="form-label">Unit</label>
+              <input type="text" class="form-control" id="<%= location %><%= DIndex %>inputIssueUnit" value="<%= voucher_id.unit %>" name="voucher_id[unit]">
+            </div>
+            <div class="col-4">
+              <label for="<%= location %><%= DIndex %>inputIssueSto" class="form-label">STO</label>
+              <input type="text" class="form-control" id="<%= location %><%= DIndex %>inputIssueSto" value="<%= voucher_id.sto %>" name="voucher_id[sto]">
+            </div>
+            <div class="col-4">
+              <label for="<%= location %><%= DIndex %>inputIssueMatDoc" class="form-label">Mat. Doc.</label>
+              <input type="text" class="form-control" id="<%= location %><%= DIndex %>inputIssueMatDoc" value="<%= voucher_id.matDoc %>" name="voucher_id[matDoc]">
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <input type="text" hidden class="form-control" value="<%= issue_id._id %>" name="i_id">
+            <div class="col-4">
+              <label for="<%= location %><%= DIndex %>inputLocation" class="form-label">Location</label>
+              <select id="<%= location %><%= DIndex %>inputLocation" class="form-select" name="issue_id[location]">
+                <option selected hidden value="<%= issue_id.location %>"><%= issue_id.location %></option>
+                <option value="R2">R2</option>
+                <option value="R3">R3</option>
+                <option value="ESH">ESH</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <label for="<%= location %><%= DIndex %>inputIssueDate" class="form-label">Date</label>
+              <input type="date" class="form-control" id="<%= location %><%= DIndex %>inputIssueDate" value="<%= issue_id.date.toISOString().substring(0,10) %>" name="issue_id[date]">
+            </div>
+            <div class="col-4">
+              <label for="inputIssueTime" class="form-label">Collection Time</label>
+              <input type="time" class="form-control" id="inputIssueTime" value="<%= issue_id.time %>" name="issue_id[time]">
+            </div>
+          </div>
+
+
+          <button class="btn btn-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#<%= location %><%= DIndex %>Example" aria-expanded="false" aria-controls="<%= location %><%= DIndex %>Example">
+            Show Items
+          </button>
+          <div class="collapse" id="<%= location %><%= DIndex %>Example">
+            <div class="card card-body bg-secondary bg-opacity-10">
+              <% voucher_id.items.forEach((item, IIndex) => { %>
+              <div class="row g-3">
+                <div class="col-7">
+                  <label for="<%= location %><%= DIndex %>inputMatDesc<%= IIndex %>" class="form-label">Mat. Desc.</label>
+                  <select class="form-select" id="<%= location %><%= DIndex %>inputMatDesc<%= IIndex %>" data-placeholder="Choose one thing" name="voucher_id[items][<%= IIndex %>][matDesc]">
+                    <option value="<%= item.matDesc %>" selected hidden><%= item.matDesc %></option>
+                    <% allAmmoItems.forEach(ammoItem => { %>
+                    <option value="<%= ammoItem %>"><%= ammoItem %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="col-3">
+                  <label for="<%= location %><%= DIndex %>inputLot<%= IIndex %>" class="form-label">Lot No.</label>
+                  <input type="text" class="form-control" id="<%= location %><%= DIndex %>inputLot<%= IIndex %>" value="<%= item.lot %>" name="voucher_id[items][<%= IIndex %>][lot]">
+                </div>
+                <div class="col-2">
+                  <label for="<%= location %><%= DIndex %>inputQty<%= IIndex %>" class="form-label">Qty</label>
+                  <input type="number" class="form-control" id="<%= location %><%= DIndex %>inputQty<%= IIndex %>" value="<%= item.qty %>" name="voucher_id[items][<%= IIndex %>][qty]">
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="row g-3">
+            <input type="text" hidden class="form-control" value="<%= return_id._id %>" name="r_id">
+            <div class="col-5">
+              <label for="<%= location %><%= DIndex %>inputReturnDate" class="form-label">Return Date</label>
+              <input type="date" class="form-control" id="<%= location %><%= DIndex %>inputReturnDate" value="<%= return_id.date.toISOString().substring(0,10) %>" name="return_id[date]">
+            </div>
+            <div class="col-5">
+              <label for="<%= location %><%= DIndex %>inputReturnTime" class="form-label">Return Time</label>
+              <input type="time" class="form-control" id="<%= location %><%= DIndex %>inputReturnTime" value="<%= return_id.time %>" name="return_id[time]">
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-5">
+              <label for="<%= location %><%= DIndex %>inputReturnStatus" class="form-label">Return Status</label>
+              <select class="form-select" id="<%= location %><%= DIndex %>inputReturnStatus" data-placeholder="Choose one thing" name="return_id[ragStatus][status]">
+                <option value="<%= return_id.status.ragStatus.status %>" selected hidden><%= return_id.status.ragStatus.status %></option>
+                <option value="NYR">NYR</option>
+                <option value="DROP & GO">DROP & GO</option>
+                <option value="RETURNS">RETURNS</option>
+                <option value="FULLY EXPENDED">FULLY EXPENDED</option>
+              </select>
+            </div>
+            <div class="col-5">
+              <label for="<%= location %><%= DIndex %>inputReturnRemarks" class="form-label">Return Remarks</label>
+              <input type="text" class="form-control" id="<%= location %><%= DIndex %>inputReturnRemarks" value="<%= return_id.status.ragStatus.remarks %>" name="return_id[ragStatus][remarks]">
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="form-check ms-3 mt-4 col-2">
+              <% if (return_id.status.safekeepStatus.sk) { %>
+              <input class="form-check-input" type="checkbox" value="true" id="<%= location %><%= DIndex %>inputSkCheck" style="transform: scale(2);" name="return_id[safekeepStatus][sk]" checked>
+              <% }else{ %>
+              <input class="form-check-input" type="checkbox" value="true" id="<%= location %><%= DIndex %>inputSkCheck" style="transform: scale(2);" name="return_id[safekeepStatus][sk]">
+              <% } %>
+              <label class="form-check-label ms-2" for="<%= location %><%= DIndex %>inputSkCheck">
+                Safekeep
+              </label>
+            </div>
+            <div class="col-3">
+              <label for="<%= location %><%= DIndex %>inputSkDate" class="form-label">Safekeep Date</label>
+              <input type="date" class="form-control" id="<%= location %><%= DIndex %>inputSkDate" value="<%= return_id.status.safekeepStatus.skDate.toISOString().substring(0,10) %>" name="return_id[safekeepStatus][skDate]">
+            </div>
+            <div class="col-3">
+              <label for="<%= location %><%= DIndex %>inputskCollectDate" class="form-label">Collection Date</label>
+              <input type="date" class="form-control" id="<%= location %><%= DIndex %>inputskCollectDate" value="<%= return_id.status.safekeepStatus.skCollect.toISOString().substring(0,10) %>" name="return_id[safekeepStatus][skCollect]">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success w-100">Update</button>
+        </div>
+      </form>
+      <div class="pb-3 px-3">
+        <form action="/displayBoard/schedule/<%= type %>/<%= date %>?_method=DELETE" method="POST">
+          <button type="submit" class="btn btn-danger w-100">Delete</button>
+          <input type="text" hidden class="form-control" value="<%= voucher_id._id %>" name="v_id">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

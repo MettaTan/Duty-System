@@ -1,0 +1,39 @@
+<table class="table text-center table-bordered border-dark">
+  <thead>
+    <tr class="align-middle">
+      <th colspan="8"><%= location %></th>
+    </tr>
+    <tr class="align-middle">
+      <th scope="col" rowspan="2">Issued Date</th>
+      <th scope="col" rowspan="2">Issued Time</th>
+      <th scope="col" rowspan="2">Unit</th>
+      <th scope="col" rowspan="2">STO</th>
+      <th scope="col" colspan="3">Return</th>
+      <th scope="col" rowspan="2">Action</th>
+    </tr>
+    <tr class="align-middle">
+      <th scope="col">Status</th>
+      <th scope="col">Time</th>
+      <th scope="col">Remarks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% documents.forEach((document, DIndex) => { %>
+    <% if (document.location == location) { %>
+    <tr>
+      <td class="issueDate"><%= document.voucher_id.issue_id.date %></td>
+      <td><%= document.voucher_id.issue_id.time %></td>
+      <td><%= document.voucher_id.unit %></td>
+      <td><%= document.voucher_id.sto %></td>
+      <td><%= document.status.ragStatus.status %></td>
+      <td><%= document.time %></td>
+      <td><%= document.remarks %></td>
+      <td>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#<%= location %><%= DIndex %>Modal">Edit</button>
+      </td>
+      <%- include(views + "/partials/components/displayBoard/schedule/Edit",{location, type, voucher_id:document.voucher_id, issue_id:document.voucher_id.issue_id, return_id:document, DIndex}) %>
+    </tr>
+    <% } %>
+    <% }) %>
+  </tbody>
+</table>

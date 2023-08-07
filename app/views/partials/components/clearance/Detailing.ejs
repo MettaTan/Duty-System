@@ -1,0 +1,32 @@
+<tr>
+  <td>
+    <%= period %>
+    <input type="text" hidden name="[detailing][<%= id %>][timing]" value="<%= period %>" id="<%= id %>timing">
+  </td>
+  <td>
+    <select class="form-select" aria-label="Default select example" name="[detailing][<%= id %>][personnel][1][rankName]" id="[<%= type %>]<%= id %>1">
+      <option value="<%= p1.rankName %>" selected hidden><%= p1.rankName %></option>
+      <% currentTeam.forEach(member => { %>
+      <option value="<%= member.rank %> <%= member.name %>"><%= member.rank %> <%= member.name %></option>
+      <% }) %>
+    </select>
+    <select class="form-select mt-5" aria-label="Default select example" name="[detailing][<%= id %>][personnel][2][rankName]" id="[<%= type %>]<%= id %>2">
+      <option value="<%= p2.rankName %>" selected hidden><%= p2.rankName %></option>
+      <% currentTeam.forEach(member => { %>
+      <option value="<%= member.rank %> <%= member.name %>"><%= member.rank %> <%= member.name %></option>
+      <% }) %>
+    </select>
+  </td>
+  <td>
+    <div class="personnel">
+      <canvas class="border border-dark sigPad"></canvas>
+      <input type="text" hidden class="sigInput" name="[detailing][<%= id %>][personnel][1][sig]" value="<%= p1.sig %>">
+      <button type="button" class="btn btn-danger mb-4 sigPadClear">Clear</button>
+    </div>
+    <div class="personnel">
+      <canvas class="border border-dark sigPad"></canvas>
+      <input type="text" hidden class="sigInput" name="[detailing][<%= id %>][personnel][2][sig]" value="<%= p2.sig %>">
+      <button type="button" class="btn btn-danger mb-4 sigPadClear">Clear</button>
+    </div>
+  </td>
+</tr>

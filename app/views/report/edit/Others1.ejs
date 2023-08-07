@@ -1,0 +1,287 @@
+<section class="container">
+  <div class="card mb-5">
+    <form class="card-body bg-secondary bg-opacity-10" autocomplete="off" action="/report/edit/<%= date %>/others/1?_method=PATCH" method="POST">
+      <div class="my-3">
+        <%- include(views + "/partials/shared/nav") %>
+      </div>
+      <main>
+        <h3 class="text-primary">Others 1</h3>
+        <ol class="vstack gap-5">
+          <!-- Discrepancy -->
+          <div>
+            <h5>
+              <li>Discrepancy: <%= allDiscrepancies.length %></li>
+            </h5>
+            <table class="table align-middle table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Ammo IC Name</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% allDiscrepancies.forEach((discrep,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" hidden name="[discrepancy][<%= i %>][id]" value="<%= discrep._id %>">
+                    <input type="text" class="form-control" placeholder="UNIT" value="<%= discrep.voucher_id.unit %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" value="<%= discrep.voucher_id.sto %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="Ammo IC Name" name="[discrepancy][<%= i %>][ammoIC]" value="<%= discrep.status.discrepStatus.ammoIC %>">
+                  </td>
+                  <td>
+                    <button class="btn btn-outline-dark" type="button" onclick="addItem('<%= i %>')">Add Item Entry</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Item</th>
+                          <th scope="col">Declared Qty</th>
+                          <th scope="col">Return Qty</th>
+                          <th scope="col">Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody id="discrepItems<%= i %>">
+                        <% discrep.status.discrepStatus.items.forEach((item,IIndex) => { %>
+                        <tr id="discrepItem<%= i %>item<%= IIndex %>">
+                          <td>
+                            <input type="text" class="form-control" placeholder="Item Name" name="[discrepancy][<%= i %>][items][<%= IIndex %>][name]" value="<%= item.name %>">
+                          </td>
+                          <td>
+                            <input type="number" class="form-control" placeholder="1800" name="[discrepancy][<%= i %>][items][<%= IIndex %>][declaredQty]" value="<%= item.declaredQty %>">
+                          </td>
+                          <td>
+                            <input type="number" class="form-control" placeholder="1200" name="[discrepancy][<%= i %>][items][<%= IIndex %>][returnQty]" value="<%= item.returnQty %>">
+                          </td>
+                          <td>
+                            <button class="btn btn-outline-danger" type="button" onclick="deleteItem('<%= i %>','<%= IIndex %>')">X</button>
+                          </td>
+                        </tr>
+                        <% }) %>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Recovery -->
+          <div>
+            <h5>
+              <li>MMRC Recovery:</li>
+            </h5>
+            <div class="vstack gap-3" id="recovery">
+              <% let MmrcIndex = 0 %>
+
+              <!-- For Recovery without Saved Discoveries -->
+              <% allRecovery.forEach((recover) => { %>
+              <% if (!recover.status.discovery_id ) { %>
+              <%- include(views + "/partials/components/report/mmrc/MmrcRecovery",{i:MmrcIndex,recover}) %>
+              <% MmrcIndex++ %>
+              <% } %>
+              <% }) %>
+
+              <!-- For Recovery With Saved Discoveries -->
+              <% allMmrcDiscoveries.forEach((discover) => { %>
+              <% if (discover.voucher_id) { %>
+              <%- include(views + "/partials/components/report/mmrc/Recovery",{i:MmrcIndex, discover}) %>
+              <% MmrcIndex++ %>
+              <% } %>
+              <% }) %>
+
+              <!-- For Recovery without Voucher -->
+              <% allMmrcDiscoveries.forEach((discover) => { %>
+              <% if (!discover.voucher_id) { %>
+              <%- include(views + "/partials/components/report/mmrc/RecoveryWoVoucher",{i:MmrcIndex, discover}) %>
+              <% MmrcIndex++ %>
+              <% } %>
+              <% }) %>
+            </div>
+            <button type="button" class="btn btn-outline-success w-100 mt-3" onclick="addRecovery()">Add Entry</button>
+          </div>
+
+          <!-- Discovery -->
+          <div>
+            <h5>
+              <li>Unit Discovery: </li>
+            </h5>
+            <div class="vstack gap-3" id="discovery">
+              <% let UnitIndex = 0 %>
+
+              <!-- For Discovery without Saved Discoveries -->
+              <% allDiscovery.forEach((discover) => { %>
+              <% if (!discover.status.discovery_id ) { %>
+              <%- include(views + "/partials/components/report/unit/UnitDiscovery",{i:UnitIndex,discover}) %>
+              <% UnitIndex++ %>
+              <% } %>
+              <% }) %>
+
+              <!-- For Discovery with Saved Discoveries -->
+              <% allUnitDiscoveries.forEach((discover) => { %>
+              <% if (discover.voucher_id) { %>
+              <%- include(views + "/partials/components/report/unit/Discovery",{i:UnitIndex, discover}) %>
+              <% UnitIndex++ %>
+              <% } %>
+              <% }) %>
+
+              <!-- For Discovery without Voucher -->
+              <% allUnitDiscoveries.forEach((discover) => { %>
+              <% if (!discover.voucher_id) { %>
+              <%- include(views + "/partials/components/report/unit/DiscoveryWoVoucher",{i:UnitIndex, discover}) %>
+              <% UnitIndex++ %>
+              <% } %>
+              <% }) %>
+            </div>
+            <button type="button" class="btn btn-outline-success w-100 mt-3" onclick="addDiscovery()">Add Entry</button>
+          </div>
+
+          <!-- Booking -->
+          <div>
+            <h5>
+              <li>Booking: 1</li>
+            </h5>
+            <table class="table align-middle table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Unit</th>
+                  <th scope="col">STO No.</th>
+                  <th scope="col">Reason</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% allBookings.forEach((booking,i) => { %>
+                <tr>
+                  <td>
+                    <input type="text" hidden name="[booking][<%= i %>][id]" value="<%= booking._id %>">
+                    <input type="text" class="form-control" placeholder="UNIT" name="[booking][<%= i %>][unit]" value="<%= booking.voucher_id.unit %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="STO" name="[booking][<%= i %>][sto]" value="<%= booking.voucher_id.sto %>" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" placeholder="Reason" name="[booking][<%= i %>][reason]" value="<%= booking.status.bookingReason %>">
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </ol>
+      </main>
+
+      <div class="hstack gap-5 mt-5">
+        <a href="/report/edit/<%= date %>/return" class="w-100">
+          <button class="btn btn-danger w-100" type="button">Back</button>
+        </a>
+        <button class="btn btn-primary w-100">Submit</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  function addItem(i) {
+    const body = document.getElementById(`discrepItems${i}`)
+    const IIndex = body.children.length
+    const row = `
+                        <tr id="discrepItem${i}item${IIndex}">
+                          <td>
+                            <input type="text" class="form-control" placeholder="Item" name="[discrepancy][${i}][items][${IIndex}][name]">
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" placeholder="18000" name="[discrepancy][${i}][items][${IIndex}][declaredQty]">
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" placeholder="12000" name="[discrepancy][${i}][items][${IIndex}][returnQty]">
+                          </td>
+                          <td>
+                            <button class="btn btn-outline-danger" type="button" onclick="deleteItem(${i},${IIndex})">X</button>
+                          </td>
+                        </tr>
+    `
+    body.insertAdjacentHTML('beforeend', row)
+  }
+
+  function deleteItem(i, IIndex) {
+    $(`#discrepItem${i}item${IIndex}`).remove()
+  }
+</script>
+
+<script>
+  function addRecovery() {
+    const body = document.getElementById(`recovery`)
+    const i = body.children.length
+    const row = `
+    <div class="input-group" id="recovery${i}">
+      <label class="input-group-text">DIS/PLAD/M/</label>
+      <input type="text" hidden value="DIS" name="[recovery][${i}][title]">
+      <input type="text" hidden value="PLAD" name="[recovery][${i}][location]">
+      <input type="text" hidden value="M" name="[recovery][${i}][tag]">
+      <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder="/083/2023" name="[recovery][${i}][discover_id]">
+      <textarea class="form-control" aria-label="With textarea" placeholder="(1 x 7.62MM TRACER)&#013;(1 x 5.56MM BALL)&#013;(1 x 5.56MM TRACER)" style="height: 100px; border-radius: 0px 0px 5px 0px;" value="(1 x 7.62MM TRACER)" name="[recovery][${i}][items]"></textarea>
+      <button type="button" class="btn btn-outline-danger" onclick="deleteRecovery(${i})">X</button>
+    </div>
+    `
+    body.insertAdjacentHTML('beforeend', row)
+  }
+
+  function deleteRecovery(i) {
+    const tab = document.getElementById(`recovery${i}`)
+    tab.setAttribute('hidden', true)
+    tab.insertAdjacentHTML("beforeend", `<input hidden type="text" value="true" name="[recovery][${i}][delete]">`)
+
+  }
+
+  function addDiscovery() {
+    const body = document.getElementById(`discovery`)
+    const i = body.children.length
+
+    const row = `
+    <div class="input-group" id="discovery${i}">
+      <select class="form-select" name="[discovery][${i}][title]">
+        <option value="DIS" selected hidden>DIS</option>
+        <option value="DIS">DIS</option>
+        <option value="COMP">COMP</option>
+        <option value="MIS">MIS</option>
+        <option value="RAI">RAI</option>
+      </select>
+
+      <select class="form-select" name="[discovery][${i}][location]">
+        <option value="PLAD" selected hidden>PLAD</option>
+        <option value="PLAD">PLAD</option>
+        <option value="HENDON">HENDON</option>
+        <option value="NEESOON">NEESOON</option>
+        <option value="TEKONG">TEKONG</option>
+      </select>
+
+      <select class="form-select" name="[discovery][${i}][tag]">
+        <option value="M" selected hidden>M</option>
+        <option value="M">M</option>
+        <option value="R">R</option>
+      </select>
+
+      <input type="text" class="form-control" placeholder="083/2023" name="[discovery][${i}][discover_id]">
+
+      <textarea class="form-control w-25" placeholder="(1 x 7.62MM TRACER)&#013;(1 x 5.56MM BALL)&#013;(1 x 5.56MM TRACER)" style="height: 100px" name="[discovery][${i}][items]"></textarea>
+      <button type="button" class="btn btn-outline-danger" onclick="deleteDiscovery(${i})">X</button>
+    </div>
+    `
+    body.insertAdjacentHTML('beforeend', row)
+  }
+
+  function deleteDiscovery(i) {
+    const tab = document.getElementById(`discovery${i}`)
+    tab.setAttribute('hidden', true)
+    tab.insertAdjacentHTML("beforeend", `<input hidden type="text" value="true" name="[discovery][${i}][delete]">`)
+  }
+</script>

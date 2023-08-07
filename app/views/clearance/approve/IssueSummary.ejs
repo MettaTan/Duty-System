@@ -1,0 +1,85 @@
+<style>
+  @media print {
+    @page {
+      /* size: 80mm 100%; */
+      margin-top: 0mm;
+      margin-right: 0mm;
+      margin-bottom: 0mm;
+      margin-left: 0mm;
+    }
+
+    #navbar,
+    #submitBar,
+    #headerLogo,
+    #denomTable {
+      display: none;
+    }
+
+    table,
+    h3,
+    h5,
+    #printBtn {
+      font-size: 10px;
+    }
+
+    #denomRow {
+      height: 50px;
+    }
+
+  }
+</style>
+
+<p id="allIssues" hidden><%= allIssues %></p>
+<section class="mx-5">
+  <div class="card mb-5">
+    <form class="card-body bg-secondary bg-opacity-10" autocomplete="off" action="/clearance/approve/<%= date %>/issueSummary/<%= issueDate %>/<%= location %>/<%= type %>?_method=PATCH" method="POST">
+      <main class="table-responsive">
+        <div id="navbar">
+          <%- include(views + "/partials/components/clearance/IssueSummaryNav", {route:"/clearance/approve}) %>
+        </div>
+        <h3>Generated Issue Summary Listing <%= location %></h3>
+        <h5 class="mb-3">
+          <span class="date"><%= issueDate %></span>
+          (<%= type %>)
+          <button class="btn btn-warning ms-3" id="printBtn" onclick="window.print()">Print</button>
+        </h5>
+        <table class="table table-bordered align-middle text-center border-dark">
+          <thead>
+            <tr class="align-middle">
+              <th scope="col">TIME</th>
+              <th scope="col">UNIT</th>
+              <th scope="col">MAT DOC.</th>
+              <th scope="col">STO NO</th>
+              <th scope="col">MAT. DESC</th>
+              <th scope="col">LOT NO.</th>
+              <th scope="col">QTY</th>
+              <th scope="col">Denominations</th>
+              <th scope="col">TOTAL QTY</th>
+            </tr>
+          </thead>
+
+          <tbody id="tbody">
+          </tbody>
+        </table>
+      </main>
+
+      <div class="hstack gap-5 mt-3" id="submitBar">
+        <a href="/clearance/approve/<%= date %>" class="w-100">
+          <button class="btn btn-danger w-100" type="button">Back</button>
+        </a>
+        <button class="btn btn-primary w-100">Submit</button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.date').forEach((date) => date.innerText = moment(date.innerText).format("DD/MM/YYYY"))
+  // order of the scripts matter
+</script>
+
+<script src="/javascripts/pendingApprovals/Item.js"></script>
+<script src="/javascripts/pendingApprovals/Voucher.js"></script>
+<script src="/javascripts/pendingApprovals/initialise.js"></script>
+<script src="/javascripts/pendingApprovals/generateApprovals.js"></script>

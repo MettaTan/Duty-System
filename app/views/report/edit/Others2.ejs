@@ -1,0 +1,45 @@
+<section class="container">
+  <div class="card">
+    <form class="card-body bg-secondary bg-opacity-10" autocomplete="off" action="/report/edit/<%= date %>/others/2?_method=PATCH" method="POST">
+      <div class="my-3">
+        <%- include(views + "/partials/shared/nav") %>
+      </div>
+      <main>
+        <h3 class="text-primary">Others 2</h3>
+        <ol class="vstack gap-5">
+          <!-- Unit Feedback -->
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea2" class="form-label">
+              <h5>
+                <li>Unit Feedback:</li>
+              </h5>
+            </label>
+            <textarea class="form-control" id="exampleFormControlTextarea2" name="feedback" rows="5"><%= report.others.feedback %></textarea>
+          </div>
+          <!-- Any Other Matters -->
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea3" class="form-label">
+              <h5>
+                <li>Any Other Matters:</li>
+              </h5>
+            </label>
+            <textarea class="form-control" id="exampleFormControlTextarea3" name="others" rows="5"><%= report.others.others %></textarea>
+          </div>
+          <!-- Outstanding Tasks -->
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">
+              <h5>
+                <li>Outstanding Tasks:</li>
+              </h5>
+            </label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="outstandingTask" rows="5"><%= report.others.outstandingTask %></textarea>
+          </div>
+        </ol>
+      </main>
+      <div class="hstack gap-5 mt-5">
+        <button class="btn btn-danger w-100" type="button" onclick="history.back()">Back</button>
+        <button class="btn btn-primary w-100">Submit</button>
+      </div>
+    </form>
+  </div>
+</section>

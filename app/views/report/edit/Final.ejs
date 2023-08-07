@@ -1,0 +1,275 @@
+<style>
+  pre {
+    white-space: pre-line;
+  }
+</style>
+
+<section class="container">
+  <div class="card mb-5">
+    <div class="card-body bg-secondary bg-opacity-10" autocomplete="off">
+      <main>
+        <ol class="p-0">
+          <li style="list-style-type: none;" class="fw-bold">PLAD</li>
+          <li style="list-style-type: none;" class="fw-bold date"><%= date %></li>
+          <li style="list-style-type: none;" class="fw-bold">Duty handover to:</li>
+        </ol>
+        <p class="my-3">
+          <% report.incomingTeam.forEach((person,i) => { %>
+          <% if (i == 0) { %>
+          <span class="d-block">RAG IC: <%= person %></span>
+          <% } else { %>
+          <span class="d-block"> <%= person %></span>
+          <% } %>
+          <% }) %>
+        </p>
+
+        <ol style="list-style-type:none;">
+          <!-- Issues -->
+          <div class="my-3">
+            <h4>
+              <li>1) Issues: </li>
+            </h4>
+            <ol style="list-style-type:none">
+              <li class="fw-semibold">i) Scheduled Issue <span class="date"><%= date %></span> (after 9): <%= after9.length %></li>
+              <li class="fw-semibold">ii) Scheduled Issue <span class="nextDay"><%= nextDay %></span> (after 5): <%= after5.length %></li>
+              <li class="fw-semibold">iii) Tasking Order: <%= taskings.length %>
+                <% taskings.forEach((task,i) => { %>
+                <span class="ps-4 mb-0 fw-normal d-block"><%= task.voucher_id.unit %> <%= task.voucher_id.sto %></span>
+                <% }) %>
+              </li>
+              <li class="fw-semibold">iv) ESH: <%= eshs.length %>
+                <% eshs.forEach((esh,i) => { %>
+                <span class="ps-4 mb-0 fw-normal d-block"><%= esh.voucher_id.unit %> <%= esh.voucher_id.sto %></span>
+                <% }) %>
+              </li>
+
+              <!-- R2 R3 Issue Summary -->
+              <li class="fw-semibold">v) R2/R3 Issued: <%= r2Issued.length + r3Issued.length %>
+                <span class="ps-4 mb-0 fw-normal d-block">R2: <%= r2Issued.length %></span>
+                <span class="ps-4 mb-0 fw-normal d-block">R3: <%= r3Issued.length %></span>
+              </li>
+
+              <!-- Not Yet Issued -->
+              <li class="fw-semibold">vi) Not Yet Issued: <%= notYetIssued.length %>
+                <% notYetIssued.forEach((el,i) => { %>
+                <span class="ps-4 mb-0 fw-normal d-block"> <%= el.voucher_id.unit %> <%= el.voucher_id.sto %> </span>
+                <% }) %>
+              </li>
+
+              <!-- Keyed Issued Vouchers -->
+              <li class="fw-semibold">vii) Keyed Issued Vouchers: <%= keyed.length %></li>
+            </ol>
+          </div>
+
+          <br>
+
+          <!-- Returns -->
+          <div class="my-3">
+            <h4>
+              <li>2) Returns: </li>
+            </h4>
+            <ol style="list-style-type:none">
+              <!-- Total Returned Vouchers -->
+              <li class="fw-semibold">i) Total Returned Vouchers: <%= unitReturns.length %></li>
+              <li class="fw-semibold">ii) Drop And Go: <%= dropAndGo.length %>
+                <span class="ps-4 mb-0 fw-normal d-block">R2: <%= r2Drop.length %></span>
+                <span class="ps-4 mb-0 fw-normal d-block">R3: <%= r3Drop.length %></span>
+              </li>
+              <li class="fw-semibold">ii) Fully Expended: <%= fullExpand.length %></li>
+            </ol>
+          </div>
+
+          <br>
+
+          <!-- Discrepancy -->
+          <div class="my-3">
+            <h4>
+              <li>3) Discrepancy: <%= discreps.length %></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:none">
+                <% discreps.forEach((discrep,i) => { %>
+                <li class="discrepancy mb-0 fw-semibold"><%= discrep.voucher_id.unit %> <%= discrep.voucher_id.sto %></li>
+                <span class="d-block fw-semibold"><%= discrep.status.discrepStatus.ammoIC %> From <%= discrep.voucher_id.unit %></span>
+                <ol style="list-style-type:none">
+                  <% discrep.status.discrepStatus.items.forEach((item,i) => { %>
+                  <li class="fw-semibold"><%= item.item %></li>
+                  <span class="fw-bold">MATERIAL DESC: <%= item.name %> <br></span>
+                  DECLARED QTY: <%= item.declaredQty %> <br>
+                  RETURN QTY: <%= item.returnQty %>
+                  <% }) %>
+                </ol>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Highrate -->
+          <div class="my-3">
+            <h4>
+              <li>4) High Rates: <%= highRates.length %></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:none">
+                <% highRates.forEach((highRate,i) => { %>
+                <li class="highRates mb-0 fw-semibold"><%= i + 1 %>)<br> Unit: <%= highRate.voucher_id.unit %> <br>STO: <%= highRate.voucher_id.sto %></li>
+                <br>
+                <% }) %>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Recovery -->
+          <div class="my-3">
+            <h4>
+              <li>4) MMRC Recovery: <%= recoveries.length %></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:lower-roman">
+                <% recoveries.forEach((recovery,i) => { %>
+                <li class=" mb-0">
+                  <%= recovery.title %>/<%= recovery.location %>/<%= recovery.tag %>/<%= recovery.discover_id %>
+                  <pre><%= recovery.items %></pre>
+                </li>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Discovery -->
+          <div class="my-3">
+            <h4>
+              <li>6) Unit Discovery: <%= discoveries.length %></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:lower-roman">
+                <% discoveries.forEach((discovery,i) => { %>
+                <li class=" mb-0">
+                  <%= discovery.title %>/<%= discovery.location %>/<%= discovery.tag %>/<%= discovery.discover_id %>
+                  <pre><%= discovery.items %></pre>
+                </li>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Booking -->
+          <div class="my-3">
+            <h4>
+              <li>7) Bookings: <%= bookings.length %></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:lower-roman">
+                <% bookings.forEach((booking,i) => { %>
+                <li class="mb-0">
+                  <%= booking.voucher_id.unit %> (<%= booking.voucher_id.sto %>)
+                  <pre class="mb-0"><%= booking.status.bookingReason %></pre>
+                </li>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Unit Feedback -->
+          <div class="my-3">
+            <h4>
+              <li>8) Unit Feedback:</li>
+            </h4>
+            <div>
+              <pre>
+                <%= report.others.feedback %>
+              </pre>
+            </div>
+          </div>
+
+          <!-- Any Other Matters -->
+          <div class="my-3">
+            <h4>
+              <li>9) Any Other Matters:</li>
+            </h4>
+            <div>
+              <pre>
+                <%= report.others.others %>
+              </pre>
+            </div>
+          </div>
+
+          <!-- Outstanding Task -->
+          <div class="my-3">
+            <h4>
+              <li>10) Outstanding Tasks:</li>
+            </h4>
+            <div>
+              <pre>
+                <%= report.others.outstandingTask %>
+              </pre>
+            </div>
+          </div>
+
+          <!-- Safekeeps -->
+          <div class="my-3">
+            <h4>
+              <li>11) Safekeeps: <%= safekeeps.length %></li>
+            </h4>
+            <div>
+              <ol style="list-style-type:none">
+                <% safekeeps.forEach((sk,i) => { %>
+                <li class="discrepancy mb-0 fw-semibold"><%= sk.voucher_id.unit %> <%= sk.voucher_id.sto %></li>
+                Safekeep Date: <span class="skDate"><%= sk.status.safekeepStatus.skDate %></span>
+                <br>
+                Collection Date: <span class="skDate"><%= sk.status.safekeepStatus.skCollect %></span>
+                <% }) %>
+              </ol>
+            </div>
+          </div>
+
+
+        </ol>
+      </main>
+
+      <div class="hstack gap-5 mt-5">
+        <a href="/" class="w-100">
+          <button class="btn btn-success w-100" type="button">Home</button>
+        </a>
+        <a href="/report/edit/<%= date %>/others/2" class="w-100">
+          <button class="btn btn-danger w-100" type="button">Back</button>
+        </a>
+        <button class="btn btn-primary w-100" type="button" onclick="copy()">Copy</button>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+<script>
+  function copy() {
+    const cb = navigator.clipboard;
+    const main = document.querySelector('main');
+    cb.writeText(main.innerText)
+  }
+</script>
+
+<script>
+  function convertDate(className) {
+    document.querySelectorAll(`.${className}`).forEach((el) => {
+      const date = moment(new Date(el.innerText).toISOString()).format("DD/MM/YYYY")
+      if (date == "01/01/1970") {
+        el.innerText = "Nill"
+      } else {
+        el.innerText = date
+      }
+    })
+  }
+  convertDate("skDate")
+  convertDate("date")
+  convertDate("nextDay")
+</script>

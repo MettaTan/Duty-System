@@ -1,0 +1,40 @@
+<main>
+  <table
+    class="table text-center table-bordered align-middle border-dark mt-5 table-striped"
+    border
+  >
+    <thead>
+      <tr>
+        <th scope="col" colspan="1">Rank & Name</th>
+        <th scope="col" colspan="3">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% ragMembers.forEach((ragMember,RIndex) => { %> <% if (rag_status) { %>
+      <% if (rag_status.leave.includes(ragMember.name)) { status = "LEAVE" }
+      else if (rag_status.MC.includes(ragMember.name)) { status = "MC" } else if
+      (rag_status.AO.includes(ragMember.name)) { status = "AO" } else { status =
+      "PRESENT"} %> <% } %>
+      <tr class="voucherRow">
+        <td class="nyrR2"><%= ragMember.rank %> <%= ragMember.name %></td>
+        <td class="nyrDate"><%= status %></td>
+        <td>
+          <button
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#<%= ragMember.nric %>Modal"
+          >
+            Edit
+          </button>
+          <%- include(views +
+          "/ragAlloc/manageRAG/editModal",{rag_member:ragMember, RIndex,
+          status}) %>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <a href="/ragAlloc">
+    <button class="btn btn-danger menuButton w-100">Back</button>
+  </a>
+</main>

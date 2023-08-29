@@ -1,0 +1,31 @@
+<main class="container w-75">
+  <div class="vstack gap-5">
+    <a href="/">
+      <button class="btn btn-danger menuButton w-100">Back</button>
+    </a>
+    <a class="btn btn-secondary menuButton" href="/ragAlloc/createRAG">
+      <strong>Register New RAG Personnel</strong>
+    </a>
+
+    <button
+      type="button"
+      class="btn btn-secondary menuButton"
+      data-bs-toggle="modal"
+      data-bs-target="#manageModal"
+    >
+      <strong>Manage RAG Status</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal", {id:"manage",
+    action:"/ragAlloc/manageRAG"}) %>
+    <button
+      type="button"
+      class="btn btn-secondary menuButton"
+      data-bs-toggle="modal"
+      data-bs-target="#allocModal"
+    >
+      <strong>Allocate RAG Personnel</strong>
+    </button>
+    <%- include(views + "/partials/shared/Modal", {id:"alloc",
+    action:"/ragAlloc/allocRAG"}) %>
+  </div>
+</main>

@@ -23,14 +23,35 @@
         <td><%= drop.voucher_id.unit %></td>
         <form action="/displayBoard/ragStatus?_method=PATCH" method="POST">
           <td>
-            <input type="text" hidden class="form-control" name="id" value="<%= drop._id %>">
-            <input type="text" class="form-control" name="personnels" value="<%= drop.personnels[0] %>">
+            <input
+              type="text"
+              hidden
+              class="form-control"
+              name="id"
+              value="<%= drop._id %>"
+            />
+            <input
+              type="text"
+              class="form-control"
+              name="personnels"
+              value="<%= drop.personnels[0] %>"
+            />
           </td>
           <td>
-            <input type="text" class="form-control" name="personnels" value="<%= drop.personnels[1] %>">
+            <input
+              type="text"
+              class="form-control"
+              name="personnels"
+              value="<%= drop.personnels[1] %>"
+            />
           </td>
           <td>
-            <input type="text" class="form-control" name="personnels" value="<%= drop.personnels[2] %>">
+            <input
+              type="text"
+              class="form-control"
+              name="personnels"
+              value="<%= drop.personnels[2] %>"
+            />
           </td>
           <td><%= drop.location %></td>
           <td>
@@ -39,14 +60,26 @@
         </form>
         <form action="/displayBoard/ragStatus/returned" method="POST">
           <td>
-            <input type="text" hidden class="form-control" name="id" value="<%= drop._id %>">
+            <input
+              type="text"
+              hidden
+              class="form-control"
+              name="id"
+              value="<%= drop._id %>"
+            />
             <span class="d-block">For Weekend</span>
             <button class="btn btn-success">Returned</button>
           </td>
         </form>
         <form action="/displayBoard/ragStatus/drop" method="POST">
           <td>
-            <input type="text" hidden class="form-control" name="id" value="<%= drop._id %>">
+            <input
+              type="text"
+              hidden
+              class="form-control"
+              name="id"
+              value="<%= drop._id %>"
+            />
             <span class="d-block">For Weekday</span>
             <button class="btn btn-warning">Cleared</button>
           </td>
@@ -84,14 +117,35 @@
         <td><%= sk.voucher_id.unit %></td>
         <form action="/displayBoard/ragStatus?_method=PATCH" method="POST">
           <td>
-            <input type="text" hidden class="form-control" name="id" value="<%= sk._id %>">
-            <input type="text" class="form-control" name="personnels" value="<%= sk.personnels[0] %>">
+            <input
+              type="text"
+              hidden
+              class="form-control"
+              name="id"
+              value="<%= sk._id %>"
+            />
+            <input
+              type="text"
+              class="form-control"
+              name="personnels"
+              value="<%= sk.personnels[0] %>"
+            />
           </td>
           <td>
-            <input type="text" class="form-control" name="personnels" value="<%= sk.personnels[1] %>">
+            <input
+              type="text"
+              class="form-control"
+              name="personnels"
+              value="<%= sk.personnels[1] %>"
+            />
           </td>
           <td>
-            <input type="text" class="form-control" name="personnels" value="<%= sk.personnels[2] %>">
+            <input
+              type="text"
+              class="form-control"
+              name="personnels"
+              value="<%= sk.personnels[2] %>"
+            />
           </td>
           <td><%= sk.location %></td>
           <td>
@@ -112,14 +166,16 @@
 <script>
   function convertDate(className) {
     document.querySelectorAll(`.${className}`).forEach((el) => {
-      const date = moment(new Date(el.innerText).toISOString()).format("DD/MM/YYYY")
+      const date = moment(new Date(el.innerText).toISOString()).format(
+        "DD/MM/YYYY"
+      );
       if (date == "01/01/1970") {
-        el.innerText = "Nill"
+        el.innerText = "Nill";
       } else {
-        el.innerText = date
+        el.innerText = date;
       }
-    })
+    });
   }
-  convertDate("issueDate")
-  convertDate("safekeepDate")
+  convertDate("issueDate");
+  convertDate("safekeepDate");
 </script>

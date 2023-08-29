@@ -1,0 +1,114 @@
+<div
+  class="modal fade"
+  id="<%= rag_member.nric %>Modal"
+  tabindex="-1"
+  aria-labelledby="<%= rag_member.nric %>ModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="<%= rag_member.nric %>ModalLabel">
+          Edit
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        action="/ragAlloc/manageRAG/<%= date %>?_method=PATCH"
+        method="POST"
+        autocomplete="false"
+      >
+        <input
+          type="text"
+          hidden
+          class="form-control"
+          value="<%= rag_member._id %>"
+          name="rag_id"
+        />
+        <div class="modal-body vstack gap-3">
+          <div class="row g-3">
+            <div class="col-4">
+              <label for="<%= RIndex %>inputRank" class="form-label"
+                >Rank</label
+              >
+              <select
+                id="<%= RIndex %>inputRank"
+                class="form-select"
+                name="rag_member[rank]"
+              >
+                <option selected hidden value="<%= rag_member.rank %>">
+                  <%= rag_member.rank %>
+                </option>
+                <option value="ME1">ME1</option>
+                <option value="ME2">ME2</option>
+                <option value="ME3">ME3</option>
+                <option value="ME4">ME4</option>
+                <option value="PTE">PTE</option>
+                <option value="LCP">LCP</option>
+                <option value="CPL">CPL</option>
+                <option value="CFC">CFC</option>
+                <option value="3SG">3SG</option>
+                <option value="2SG">2SG</option>
+                <option value="1SG">1SG</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <label for="<%= RIndex %>inputName" class="form-label"
+                >Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="<%= RIndex %>inputName"
+                value="<%= rag_member.name %>"
+                name="rag_member[name]"
+              />
+            </div>
+            <div class="col-4">
+              <label for="<%= RIndex %>inputStatus" class="form-label"
+                >Status</label
+              >
+              <select
+                id="<%= RIndex %>inputStatus"
+                class="form-select"
+                name="rag_member[status]"
+              >
+                <option selected hidden value="<%= rag_member.status %>">
+                  <%= status %>
+                </option>
+                <option value="PRESENT">PRESENT</option>
+                <option value="LEAVE">LEAVE</option>
+                <option value="MC">MC</option>
+                <option value="AO">AO</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success w-100">Update</button>
+        </div>
+      </form>
+      <div class="pb-3 px-3">
+        <form
+          action="/ragAlloc/manageRAG/<%= date %>?_method=DELETE"
+          method="POST"
+        >
+          <button type="submit" class="btn btn-danger w-100">Delete</button>
+          <input
+            type="text"
+            hidden
+            class="form-control"
+            value="<%= rag_member._id %>"
+            name="rag_id"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

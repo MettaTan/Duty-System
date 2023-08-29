@@ -1,0 +1,98 @@
+<main>
+  <form
+    action="/ragAlloc/allocRAG/<%= date %>?_method=PATCH"
+    method="POST"
+    autocomplete="false"
+  >
+    <input
+      type="text"
+      hidden
+      class="form-control"
+      value="<%= rag_alloc._id %>"
+      name="rag_alloc"
+    />
+
+    <!--
+
+-->
+    <table
+      class="table text-center table-bordered align-middle border-dark mt-5 table-striped"
+      border
+    >
+      <thead>
+        <tr>
+          <th scope="col" colspan="1">Rank & Name</th>
+          <th scope="col" colspan="3">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rag_members.forEach((rag_member,RIndex) => { %>
+        <input
+          type="text"
+          hidden
+          class="form-control"
+          value="<%= rag_member.rank %> <%= rag_member.name %>"
+          name="present_rags"
+        />
+        <tr class="voucherRow">
+          <td class="nyrR2"><%= rag_member.rank %> <%= rag_member.name %></td>
+
+          <td>
+            <label
+              for="<%= rag_member %><%= RIndex %>inputAssign"
+              class="form-label"
+              >Assign to Department</label
+            >
+
+            <% if (rag_alloc) { %> <% if
+            (rag_alloc.MMRC.includes(rag_member.rank + " " + rag_member.name)) {
+            rag_assignment = "MMRC" } else if
+            (rag_alloc.DG.includes(rag_member.rank + " " + rag_member.name)) {
+            rag_assignment = "DG" } else if
+            (rag_alloc.CollectReturn.includes(rag_member.rank + " " +
+            rag_member.name)) { rag_assignment = "CollectReturn" } else if
+            (rag_alloc.R2.includes(rag_member.rank + " " + rag_member.name)) {
+            rag_assignment = "R2"} else if
+            (rag_alloc.R3.includes(rag_member.rank + " " + rag_member.name)) {
+            rag_assignment = "R3"} else if
+            (rag_alloc.DIST.includes(rag_member.rank + " " + rag_member.name)) {
+            rag_assignment = "DIST"} else if
+            (rag_alloc.Salvage.includes(rag_member.rank + " " +
+            rag_member.name)) { rag_assignment = "Salvage"} else if
+            (rag_alloc.Others.includes(rag_member.rank + " " + rag_member.name))
+            { rag_assignment = "Others"} else { rag_assignment = ""} %> <% } %>
+            <select
+              id="<%= rag_member %>Assignment"
+              class="form-select"
+              value="<%= rag_assignment %>"
+              name="rag_assignment"
+              required
+            >
+              <option selected hidden value="<%= rag_assignment %>">
+                <%= rag_assignment %>
+              </option>
+              <option value="MMRC">MMRC</option>
+              <option value="DG">Drop & Go</option>
+              <option value="CollectReturn">Collection/Return</option>
+              <option value="R2">R2</option>
+              <option value="R3">R3</option>
+              <option value="DIST">DIST</option>
+              <option value="Salvage">Salvage</option>
+              <option value="Others">Others</option>
+            </select>
+          </td>
+        </tr>
+
+        <% }) %>
+      </tbody>
+    </table>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success w-100">
+        Confirm Assignment
+      </button>
+    </div>
+  </form>
+  <a href="/ragAlloc">
+    <button class="btn btn-danger menuButton w-100">Back</button>
+  </a>
+</main>
